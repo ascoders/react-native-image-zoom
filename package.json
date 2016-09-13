@@ -1,5 +1,5 @@
 {
-  "name": "nt-image-zoom",
+  "name": "react-native-image-pan-zoom",
   "version": "0.0.1",
   "description": "图片手势操作",
   "main": "lib/index.js",
