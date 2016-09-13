@@ -1,0 +1,21 @@
+{
+  "name": "nt-image-zoom",
+  "version": "0.0.1",
+  "description": "图片手势操作",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ascoders/react-native-image-zoom.git"
+  },
+  "keywords": [
+    "image-zoom"
+  ],
+  "author": "ascoders",
+  "license": "ISC",
+  "dependencies": {},
+  "peerDependencies": {
+    "react": "^0.14.0 || ^15.0.0",
+    "react-native": "^0.32.0"
+  }
+}
