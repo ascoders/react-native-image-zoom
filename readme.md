@@ -1,6 +1,3 @@
-# react-native-image-viewer
-react native image pan and zoom
-
 ## Show Cases
 
 > Zoom while sliding
