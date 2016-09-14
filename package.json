@@ -1,10 +1,6 @@
 {
   "name": "react-native-image-pan-zoom",
-<<<<<<< HEAD
   "version": "1.0.2",
-=======
-  "version": "1.0.0",
->>>>>>> 039d9be79c80211aface0438117fdc917f33e748
   "description": "图片手势操作",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -18,11 +14,7 @@
   "author": "ascoders",
   "license": "ISC",
   "dependencies": {
-<<<<<<< HEAD
     "nt-auto-bind": "^1.0.1"
-=======
-    "nt-auto-bind": "^1.0.0"
->>>>>>> 039d9be79c80211aface0438117fdc917f33e748
   },
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0",
