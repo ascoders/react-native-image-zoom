@@ -9,7 +9,10 @@ export default class Demo extends React.Component <any, any> {
 
     render() {
         return (
-            <ImageZoom />
+            <ImageZoom cropWidth={200}
+                       cropHeight={200}
+                       imageWidth={100}
+                       imageHeight={100}/>
         )
     }
 }
