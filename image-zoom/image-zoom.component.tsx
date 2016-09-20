@@ -242,7 +242,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                 const stayTime = new Date().getTime() - this.lastTouchStartTime
                 const moveDistance = Math.sqrt(gestureState.dx * gestureState.dx + gestureState.dy * gestureState.dy)
                 if (evt.nativeEvent.changedTouches.length === 1 && stayTime < this.props.leaveStayTime && moveDistance < this.props.leaveDistance) {
-                    this.props.onCancle()
+                    this.props.onCancel()
                     return
                 } else {
                     this.props.responderRelease(gestureState.vx)
@@ -326,7 +326,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
             onMoveShouldSetPanResponderCapture: (evt, gestureState) => false,
 
             onPanResponderRelease: (evt, gestureState) => {
-                this.props.onCancle()
+                this.props.onCancel()
 
                 // 取消长按
                 if (this.longPressTimeout) {

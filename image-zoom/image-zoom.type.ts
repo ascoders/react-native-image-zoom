@@ -5,7 +5,7 @@ export interface PropsDefine extends ReactNative.ViewProperties {
     /**
      * 取消的回调
      */
-    onCancle?: ()=>void
+    onCancel?: ()=>void
 
     /**
      * 操作区域宽度
