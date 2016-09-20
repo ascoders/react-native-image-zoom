@@ -19,6 +19,8 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     private centerY;
     private lastTouchStartTime;
     private horizontalWholeOuterCounter;
+    private horizontalWholeCounter;
+    private verticalWholeCounter;
     private centerDiffX;
     private centerDiffY;
     private longPressTimeout;
