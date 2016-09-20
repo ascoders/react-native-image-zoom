@@ -1,6 +1,6 @@
 import * as ReactNative from 'react-native';
 export interface PropsDefine extends ReactNative.ViewProperties {
-    onCancle?: () => void;
+    onCancel?: () => void;
     cropWidth: number;
     cropHeight: number;
     imageWidth: number;
