@@ -40,6 +40,10 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     // 滑动过程中，整体横向过界偏移量
     private horizontalWholeOuterCounter = 0
 
+    // 滑动过程中，x y的总位移
+    private horizontalWholeCounter = 0
+    private verticalWholeCounter = 0
+
     // 两手距离中心点位置
     private centerDiffX = 0
     private centerDiffY = 0
@@ -61,6 +65,8 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                 this.lastPositionX = null
                 this.lastPositionY = null
                 this.zoomLastDistance = null
+                this.horizontalWholeCounter = 0
+                this.verticalWholeCounter = 0
                 this.lastTouchStartTime = new Date().getTime()
 
                 if (evt.nativeEvent.changedTouches.length > 1) {
@@ -77,29 +83,32 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                 }, this.props.longPressTime)
             },
             onPanResponderMove: (evt, gestureState) => {
-                // 只要有手指操作，都取消长按状态
-                if (this.longPressTimeout) {
-                    clearTimeout(this.longPressTimeout)
-                }
-
                 if (evt.nativeEvent.changedTouches.length <= 1) {
                     // 一个手指的情况
+                    // x 位移
+                    let diffX = gestureState.dx - this.lastPositionX
+                    if (this.lastPositionX === null) {
+                        diffX = 0
+                    }
+                    // y 位移
+                    let diffY = gestureState.dy - this.lastPositionY
+                    if (this.lastPositionY === null) {
+                        diffY = 0
+                    }
+
+                    // 保留这一次位移作为下次的上一次位移
+                    this.lastPositionX = gestureState.dx
+                    this.lastPositionY = gestureState.dy
+
+                    this.horizontalWholeCounter += diffX
+                    this.verticalWholeCounter += diffY
+
+                    if (Math.abs(this.horizontalWholeCounter) > 5 || Math.abs(this.verticalWholeCounter) > 5) {
+                        // 如果位移超出手指范围，取消长按监听
+                        clearTimeout(this.longPressTimeout)
+                    }
+
                     if (this.props.panToMove) {
-                        // x 位移
-                        let diffX = gestureState.dx - this.lastPositionX
-                        if (this.lastPositionX === null) {
-                            diffX = 0
-                        }
-                        // y 位移
-                        let diffY = gestureState.dy - this.lastPositionY
-                        if (this.lastPositionY === null) {
-                            diffY = 0
-                        }
-
-                        // 保留这一次位移作为下次的上一次位移
-                        this.lastPositionX = gestureState.dx
-                        this.lastPositionY = gestureState.dy
-
                         // diffX > 0 表示手往右滑，图往左移动，反之同理
                         // horizontalWholeOuterCounter > 0 表示溢出在左侧，反之在右侧，绝对值越大溢出越多
                         if (this.props.imageWidth * this.scale > this.props.cropWidth) { // 如果图片宽度大图盒子宽度， 可以横向拖拽
@@ -178,6 +187,11 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                     }
                 } else {
                     // 多个手指的情况
+                    // 取消长按状态
+                    if (this.longPressTimeout) {
+                        clearTimeout(this.longPressTimeout)
+                    }
+
                     if (this.props.pinchToZoom) {
                         // 找最小的 x 和最大的 x
                         let minX: number
