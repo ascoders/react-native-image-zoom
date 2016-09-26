@@ -27,8 +27,6 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
 
     // 图片手势处理
     private imagePanResponder: React.PanResponderInstance
-    // 最外层手势处理
-    private outerPanResponder: React.PanResponderInstance
 
     // 图片视图当前中心的位置
     private centerX: number
@@ -220,7 +218,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                         this.zoomCurrentDistance = Number(diagonalDistance.toFixed(1))
 
                         if (this.zoomLastDistance !== null) {
-                            let distanceDiff = (this.zoomCurrentDistance - this.zoomLastDistance) / 400
+                            let distanceDiff = (this.zoomCurrentDistance - this.zoomLastDistance) / 200
                             let zoom = this.scale + distanceDiff
 
                             if (zoom < 0.6) {
@@ -331,23 +329,6 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
 
             }
         })
-
-        this.outerPanResponder = PanResponder.create({
-            // 要求成为响应者：
-            onStartShouldSetPanResponder: (evt, gestureState) => true,
-            onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
-            onMoveShouldSetPanResponder: (evt, gestureState) => false,
-            onMoveShouldSetPanResponderCapture: (evt, gestureState) => false,
-
-            onPanResponderRelease: (evt, gestureState) => {
-                this.props.onCancel()
-
-                // 取消长按
-                if (this.longPressTimeout) {
-                    clearTimeout(this.longPressTimeout)
-                }
-            }
-        })
     }
 
     /**
@@ -382,10 +363,10 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
         }
 
         return (
-            <View style={[styles.container, {width:this.props.cropWidth,height:this.props.cropHeight}]} {...this.outerPanResponder.panHandlers}>
+            <View style={[styles.container, {width:this.props.cropWidth,height:this.props.cropHeight}]} {...this.imagePanResponder.panHandlers}>
                 <Animated.View style={animateConf}>
                     <View onLayout={this.handleLayout}
-                          style={{width:this.props.imageWidth,height:this.props.imageHeight}} {...this.imagePanResponder.panHandlers}>
+                          style={{width:this.props.imageWidth,height:this.props.imageHeight}}>
                         {this.props.children}
                     </View>
                 </Animated.View>
