@@ -14,7 +14,6 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     private zoomLastDistance;
     private zoomCurrentDistance;
     private imagePanResponder;
-    private outerPanResponder;
     private centerX;
     private centerY;
     private lastTouchStartTime;
