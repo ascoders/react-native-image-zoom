@@ -29,8 +29,8 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     private imagePanResponder: React.PanResponderInstance
 
     // 图片视图当前中心的位置
-    private centerX: number
-    private centerY: number
+    // private centerX: number
+    // private centerY: number
 
     // 上次手按下去的时间
     private lastTouchStartTime: number
@@ -335,8 +335,8 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
      * 图片区域视图渲染完毕
      */
     handleLayout(event: React.LayoutChangeEvent) {
-        this.centerX = event.nativeEvent.layout.x + event.nativeEvent.layout.width / 2
-        this.centerY = event.nativeEvent.layout.y + event.nativeEvent.layout.height / 2
+        // this.centerX = event.nativeEvent.layout.x + event.nativeEvent.layout.width / 2
+        // this.centerY = event.nativeEvent.layout.y + event.nativeEvent.layout.height / 2
     }
 
     /**
