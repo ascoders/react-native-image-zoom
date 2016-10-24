@@ -21,6 +21,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     private centerDiffX;
     private centerDiffY;
     private longPressTimeout;
+    private lastClickTime;
     componentWillMount(): void;
     handleLayout(event: React.LayoutChangeEvent): void;
     reset(): void;

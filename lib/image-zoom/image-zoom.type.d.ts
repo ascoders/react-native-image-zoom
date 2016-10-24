@@ -1,6 +1,6 @@
 import * as ReactNative from 'react-native';
 export interface PropsDefine extends ReactNative.ViewProperties {
-    onCancel?: () => void;
+    onClick?: () => void;
     cropWidth: number;
     cropHeight: number;
     imageWidth: number;
@@ -15,6 +15,7 @@ export interface PropsDefine extends ReactNative.ViewProperties {
     maxOverflow?: number;
     longPressTime?: number;
     onLongPress?: () => void;
+    onDoubleClick?: () => void;
     others?: any;
 }
 export declare class PropsGaea {
@@ -23,7 +24,7 @@ export declare class PropsGaea {
     gaeaUniqueKey: string;
 }
 export declare class Props extends PropsGaea implements PropsDefine {
-    onCancle: () => void;
+    onClick: () => void;
     onLongPress: () => void;
     panToMove: boolean;
     pinchToZoom: boolean;
@@ -38,6 +39,7 @@ export declare class Props extends PropsGaea implements PropsDefine {
     maxOverflow: number;
     horizontalOuterRangeOffset: () => void;
     responderRelease: () => void;
+    onDoubleClick: () => void;
 }
 export interface StateDefine {
     centerX?: number;
