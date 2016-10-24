@@ -1,8 +1,16 @@
 import * as React from 'react'
-import {View, PanResponder, Animated} from 'react-native'
+import {View, PanResponder, Animated, Platform} from 'react-native'
 import * as typings from './image-zoom.type'
 import {autoBindClass} from '../../auto-bind/index'
 import styles from './image-zoom.style'
+
+const isMobile = ()=> {
+    if (Platform.OS === 'web' as React.PlatformOSType) {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    } else {
+        return true
+    }
+}
 
 @autoBindClass
 export default class ImageViewer extends React.Component<typings.PropsDefine, typings.StateDefine> {
@@ -49,13 +57,18 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     // 计算长按的 timeout
     private longPressTimeout: NodeJS.Timer
 
+    // 上一次点击的时间
+    private lastClickTime = 0
+
     componentWillMount() {
+        const setResponder = isMobile()
+
         this.imagePanResponder = PanResponder.create({
             // 要求成为响应者：
-            onStartShouldSetPanResponder: (evt, gestureState) => true,
-            onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-            onMoveShouldSetPanResponder: (evt, gestureState) => true,
-            onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+            onStartShouldSetPanResponder: (evt, gestureState) => setResponder,
+            onStartShouldSetPanResponderCapture: (evt, gestureState) => setResponder,
+            onMoveShouldSetPanResponder: (evt, gestureState) => setResponder,
+            onMoveShouldSetPanResponderCapture: (evt, gestureState) => setResponder,
             onPanResponderTerminationRequest: (evt, gestureState) => false,
 
             onPanResponderGrant: (evt, gestureState) => {
@@ -79,10 +92,20 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                 this.longPressTimeout = setTimeout(()=> {
                     this.props.onLongPress()
                 }, this.props.longPressTime)
+
+                if (evt.nativeEvent.changedTouches.length <= 1) {
+                    // 一个手指的情况
+                    if (new Date().getTime() - this.lastClickTime < 175) {
+                        // 认为触发了双击
+                        this.lastClickTime = 0
+                        this.props.onDoubleClick()
+                    } else {
+                        this.lastClickTime = new Date().getTime()
+                    }
+                }
             },
             onPanResponderMove: (evt, gestureState) => {
                 if (evt.nativeEvent.changedTouches.length <= 1) {
-                    // 一个手指的情况
                     // x 位移
                     let diffX = gestureState.dx - this.lastPositionX
                     if (this.lastPositionX === null) {
@@ -250,12 +273,11 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                 }
             },
             onPanResponderRelease: (evt, gestureState) => {
-                // 手势完成,如果是单个手指、距离上次按住只有预设秒、滑动距离小于预设值,认为是退出
+                // 手势完成,如果是单个手指、距离上次按住只有预设秒、滑动距离小于预设值,认为是单击
                 const stayTime = new Date().getTime() - this.lastTouchStartTime
                 const moveDistance = Math.sqrt(gestureState.dx * gestureState.dx + gestureState.dy * gestureState.dy)
                 if (evt.nativeEvent.changedTouches.length === 1 && stayTime < this.props.leaveStayTime && moveDistance < this.props.leaveDistance) {
-                    this.props.onCancel()
-                    return
+                    this.props.onClick()
                 } else {
                     this.props.responderRelease(gestureState.vx)
                 }

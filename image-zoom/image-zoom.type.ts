@@ -3,9 +3,9 @@ import * as ReactNative from 'react-native'
 
 export interface PropsDefine extends ReactNative.ViewProperties {
     /**
-     * 取消的回调
+     * 单击的回调
      */
-    onCancel?: ()=>void
+    onClick?: ()=>void
 
     /**
      * 操作区域宽度
@@ -79,6 +79,11 @@ export interface PropsDefine extends ReactNative.ViewProperties {
     onLongPress?: ()=>void
 
     /**
+     * 双击的回调
+     */
+    onDoubleClick?: ()=>void
+
+    /**
      * 透传
      */
     others?: any
@@ -91,7 +96,7 @@ export class PropsGaea {
 }
 
 export class Props extends PropsGaea implements PropsDefine {
-    onCancle = ()=> {
+    onClick = ()=> {
     }
     onLongPress = ()=> {
     }
@@ -109,6 +114,8 @@ export class Props extends PropsGaea implements PropsDefine {
     horizontalOuterRangeOffset = ()=> {
     }
     responderRelease = ()=> {
+    }
+    onDoubleClick = ()=> {
     }
 }
 
