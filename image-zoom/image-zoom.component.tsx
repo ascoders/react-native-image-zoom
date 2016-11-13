@@ -37,8 +37,8 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     private imagePanResponder: React.PanResponderInstance
 
     // 图片视图当前中心的位置
-    // private centerX: number
-    // private centerY: number
+    //private centerX: number
+    //private centerY: number
 
     // 上次手按下去的时间
     private lastTouchStartTime: number
@@ -60,6 +60,13 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     // 上一次点击的时间
     private lastClickTime = 0
 
+    // 双击时的位置
+    private doubleClickX = 0
+    private doubleClickY = 0
+
+    // 是否双击缩放了
+    private isDoubleClickScale = false
+
     componentWillMount() {
         const setResponder = isMobile()
 
@@ -79,6 +86,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                 this.horizontalWholeCounter = 0
                 this.verticalWholeCounter = 0
                 this.lastTouchStartTime = new Date().getTime()
+                this.isDoubleClickScale = false
 
                 if (evt.nativeEvent.changedTouches.length > 1) {
                     this.centerDiffX = (evt.nativeEvent.changedTouches[0].pageX + evt.nativeEvent.changedTouches[1].pageX) / 2 - this.props.cropWidth / 2
@@ -99,6 +107,49 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                         // 认为触发了双击
                         this.lastClickTime = 0
                         this.props.onDoubleClick()
+
+                        // // 取消长按
+                        // clearTimeout(this.longPressTimeout)
+                        //
+                        // // 因为可能触发放大，因此记录双击时的坐标位置
+                        // this.doubleClickX = evt.nativeEvent.changedTouches[0].pageX
+                        // this.doubleClickY = evt.nativeEvent.changedTouches[0].pageY
+                        //
+                        // // 缩放
+                        // this.isDoubleClickScale = true
+                        // if (this.scale > 1 || this.scale < 1) {
+                        //     // 回归原位
+                        //     this.scale = 1
+                        //
+                        //     this.positionX = 0
+                        //     this.positionY = 0
+                        // } else {
+                        //     // 开始在位移地点缩放
+                        //     // 记录之前缩放比例
+                        //     const beforeScale = this.scale
+                        //
+                        //     // 开始缩放
+                        //     this.scale = 2
+                        //
+                        //     // 缩放 diff
+                        //     const diffScale = this.scale - beforeScale
+                        //     // 找到两手中心点距离页面中心的位移
+                        //     // 移动位置
+                        //     this.positionX = this.doubleClickX * diffScale / this.scale
+                        //     this.positionY = this.doubleClickY * diffScale / this.scale
+                        // }
+                        // Animated.timing(this.animatedScale, {
+                        //     toValue: this.scale,
+                        //     duration: 100,
+                        // }).start()
+                        // Animated.timing(this.animatedPositionX, {
+                        //     toValue: this.positionX,
+                        //     duration: 100,
+                        // }).start()
+                        // Animated.timing(this.animatedPositionY, {
+                        //     toValue: this.positionY,
+                        //     duration: 100,
+                        // }).start()
                     } else {
                         this.lastClickTime = new Date().getTime()
                     }
@@ -273,6 +324,11 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                 }
             },
             onPanResponderRelease: (evt, gestureState) => {
+                // 双击缩放了，结束手势就不需要操作了
+                if (this.isDoubleClickScale) {
+                    return
+                }
+
                 // 手势完成,如果是单个手指、距离上次按住只有预设秒、滑动距离小于预设值,认为是单击
                 const stayTime = new Date().getTime() - this.lastTouchStartTime
                 const moveDistance = Math.sqrt(gestureState.dx * gestureState.dx + gestureState.dy * gestureState.dy)
@@ -357,8 +413,8 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
      * 图片区域视图渲染完毕
      */
     handleLayout(event: React.LayoutChangeEvent) {
-        // this.centerX = event.nativeEvent.layout.x + event.nativeEvent.layout.width / 2
-        // this.centerY = event.nativeEvent.layout.y + event.nativeEvent.layout.height / 2
+        //this.centerX = event.nativeEvent.layout.x + event.nativeEvent.layout.width / 2
+        //this.centerY = event.nativeEvent.layout.y + event.nativeEvent.layout.height / 2
     }
 
     /**
