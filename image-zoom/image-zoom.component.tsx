@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {View, PanResponder, Animated, Platform} from 'react-native'
 import * as typings from './image-zoom.type'
-import {autoBindClass} from '../../auto-bind/index'
+import {autoBindClass} from 'nt-auto-bind'
 import styles from './image-zoom.style'
 
 const isMobile = ()=> {
