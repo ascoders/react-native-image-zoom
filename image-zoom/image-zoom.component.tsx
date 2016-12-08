@@ -228,10 +228,14 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                             const horizontalMax = (this.props.imageWidth * this.scale - this.props.cropWidth) / 2 / this.scale
                             if (this.positionX < -horizontalMax) { // 超越了左边临界点，还在继续向左移动
                                 this.positionX = -horizontalMax
-                                this.horizontalWholeOuterCounter += diffX
+
+                                // 让其产生细微位移，偏离轨道
+                                this.horizontalWholeOuterCounter += -1/1e10
                             } else if (this.positionX > horizontalMax) { // 超越了右侧临界点，还在继续向右移动
                                 this.positionX = horizontalMax
-                                this.horizontalWholeOuterCounter += diffX
+
+                                // 让其产生细微位移，偏离轨道
+                                this.horizontalWholeOuterCounter += 1/1e10
                             }
                             this.animatedPositionX.setValue(this.positionX)
                         } else {
