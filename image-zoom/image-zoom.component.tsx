@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {View, PanResponder, Animated, Platform} from 'react-native'
 import * as typings from './image-zoom.type'
-import {autoBindClass} from 'nt-auto-bind'
 import styles from './image-zoom.style'
 
 const isMobile = ()=> {
@@ -12,7 +11,6 @@ const isMobile = ()=> {
     }
 }
 
-@autoBindClass
 export default class ImageViewer extends React.Component<typings.PropsDefine, typings.StateDefine> {
     static defaultProps: typings.PropsDefine = new typings.Props()
     public state: typings.StateDefine = new typings.State()
@@ -447,7 +445,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
         return (
             <View style={[styles.container, {width:this.props.cropWidth,height:this.props.cropHeight}]} {...this.imagePanResponder.panHandlers}>
                 <Animated.View style={animateConf}>
-                    <View onLayout={this.handleLayout}
+                    <View onLayout={this.handleLayout.bind(this)}
                           style={{width:this.props.imageWidth,height:this.props.imageHeight}}>
                         {this.props.children}
                     </View>
