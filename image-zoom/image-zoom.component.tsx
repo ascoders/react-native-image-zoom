@@ -1,10 +1,10 @@
 import * as React from 'react'
-import {View, PanResponder, Animated, Platform} from 'react-native'
+import { View, PanResponder, Animated, Platform, PlatformOSType, PanResponderInstance, LayoutChangeEvent } from 'react-native'
 import * as typings from './image-zoom.type'
 import styles from './image-zoom.style'
 
-const isMobile = ()=> {
-    if (Platform.OS === 'web' as React.PlatformOSType) {
+const isMobile = () => {
+    if (Platform.OS === 'web' as PlatformOSType) {
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
     } else {
         return true
@@ -33,7 +33,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     private zoomCurrentDistance = 0
 
     // 图片手势处理
-    private imagePanResponder: React.PanResponderInstance
+    private imagePanResponder: PanResponderInstance
 
     // 图片视图当前中心的位置
     //private centerX: number
@@ -54,7 +54,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     private centerDiffY = 0
 
     // 计算长按的 timeout
-    private longPressTimeout: NodeJS.Timer
+    private longPressTimeout: number
 
     // 上一次点击的时间
     private lastClickTime = 0
@@ -96,7 +96,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                 if (this.longPressTimeout) {
                     clearTimeout(this.longPressTimeout)
                 }
-                this.longPressTimeout = setTimeout(()=> {
+                this.longPressTimeout = setTimeout(() => {
                     this.props.onLongPress()
                 }, this.props.longPressTime)
 
@@ -229,12 +229,12 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                                 this.positionX = -horizontalMax
 
                                 // 让其产生细微位移，偏离轨道
-                                this.horizontalWholeOuterCounter += -1/1e10
+                                this.horizontalWholeOuterCounter += -1 / 1e10
                             } else if (this.positionX > horizontalMax) { // 超越了右侧临界点，还在继续向右移动
                                 this.positionX = horizontalMax
 
                                 // 让其产生细微位移，偏离轨道
-                                this.horizontalWholeOuterCounter += 1/1e10
+                                this.horizontalWholeOuterCounter += 1 / 1e10
                             }
                             this.animatedPositionX.setValue(this.positionX)
                         } else {
@@ -406,7 +406,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                     clearTimeout(this.longPressTimeout)
                 }
             },
-            onPanResponderTerminate: (evt, gestureState)=> {
+            onPanResponderTerminate: (evt, gestureState) => {
 
             }
         })
@@ -415,7 +415,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     /**
      * 图片区域视图渲染完毕
      */
-    handleLayout(event: React.LayoutChangeEvent) {
+    handleLayout(event: LayoutChangeEvent) {
         //this.centerX = event.nativeEvent.layout.x + event.nativeEvent.layout.width / 2
         //this.centerY = event.nativeEvent.layout.y + event.nativeEvent.layout.height / 2
     }
@@ -444,10 +444,10 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
         }
 
         return (
-            <View style={[styles.container, {width:this.props.cropWidth,height:this.props.cropHeight}]} {...this.imagePanResponder.panHandlers}>
+            <View style={[styles.container, { width: this.props.cropWidth, height: this.props.cropHeight }]} {...this.imagePanResponder.panHandlers}>
                 <Animated.View style={animateConf}>
                     <View onLayout={this.handleLayout.bind(this)}
-                          style={{width:this.props.imageWidth,height:this.props.imageHeight}}>
+                        style={{ width: this.props.imageWidth, height: this.props.imageHeight }}>
                         {this.props.children}
                     </View>
                 </Animated.View>
