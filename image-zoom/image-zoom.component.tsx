@@ -107,48 +107,51 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                         this.lastClickTime = 0
                         this.props.onDoubleClick()
 
-                        // // 取消长按
-                        // clearTimeout(this.longPressTimeout)
-                        //
-                        // // 因为可能触发放大，因此记录双击时的坐标位置
-                        // this.doubleClickX = evt.nativeEvent.changedTouches[0].pageX
-                        // this.doubleClickY = evt.nativeEvent.changedTouches[0].pageY
-                        //
-                        // // 缩放
-                        // this.isDoubleClickScale = true
-                        // if (this.scale > 1 || this.scale < 1) {
-                        //     // 回归原位
-                        //     this.scale = 1
-                        //
-                        //     this.positionX = 0
-                        //     this.positionY = 0
-                        // } else {
-                        //     // 开始在位移地点缩放
-                        //     // 记录之前缩放比例
-                        //     const beforeScale = this.scale
-                        //
-                        //     // 开始缩放
-                        //     this.scale = 2
-                        //
-                        //     // 缩放 diff
-                        //     const diffScale = this.scale - beforeScale
-                        //     // 找到两手中心点距离页面中心的位移
-                        //     // 移动位置
-                        //     this.positionX = this.doubleClickX * diffScale / this.scale
-                        //     this.positionY = this.doubleClickY * diffScale / this.scale
-                        // }
-                        // Animated.timing(this.animatedScale, {
-                        //     toValue: this.scale,
-                        //     duration: 100,
-                        // }).start()
-                        // Animated.timing(this.animatedPositionX, {
-                        //     toValue: this.positionX,
-                        //     duration: 100,
-                        // }).start()
-                        // Animated.timing(this.animatedPositionY, {
-                        //     toValue: this.positionY,
-                        //     duration: 100,
-                        // }).start()
+                        // 取消长按
+                        clearTimeout(this.longPressTimeout)
+
+                        // 因为可能触发放大，因此记录双击时的坐标位置
+                        this.doubleClickX = evt.nativeEvent.changedTouches[0].pageX
+                        this.doubleClickY = evt.nativeEvent.changedTouches[0].pageY
+
+                        // 缩放
+                        this.isDoubleClickScale = true
+                        if (this.scale > 1 || this.scale < 1) {
+                            // 回归原位
+                            this.scale = 1
+
+                            this.positionX = 0
+                            this.positionY = 0
+                        } else {
+                            // 开始在位移地点缩放
+                            // 记录之前缩放比例
+                            // 此时 this.scale 一定为 1
+                            const beforeScale = this.scale
+
+                            // 开始缩放
+                            this.scale = 2
+
+                            // 缩放 diff
+                            const diffScale = this.scale - beforeScale
+                            // 找到两手中心点距离页面中心的位移
+                            // 移动位置
+                            this.positionX = (this.props.cropWidth / 2 - this.doubleClickX) * diffScale / this.scale
+                            this.positionY = (this.props.cropHeight / 2 - this.doubleClickY) * diffScale / this.scale
+                        }
+                        Animated.parallel([
+                            Animated.timing(this.animatedScale, {
+                                toValue: this.scale,
+                                duration: 100,
+                            }),
+                            Animated.timing(this.animatedPositionX, {
+                                toValue: this.positionX,
+                                duration: 100,
+                            }),
+                            Animated.timing(this.animatedPositionY, {
+                                toValue: this.positionY,
+                                duration: 100,
+                            })
+                        ]).start()
                     } else {
                         this.lastClickTime = new Date().getTime()
                     }
