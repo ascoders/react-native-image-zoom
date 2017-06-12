@@ -54,7 +54,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     private centerDiffY = 0
 
     // 计算长按的 timeout
-    private longPressTimeout: number
+    private longPressTimeout: any
 
     // 上一次点击的时间
     private lastClickTime = 0
