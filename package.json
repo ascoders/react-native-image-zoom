@@ -6,7 +6,7 @@
   "typings": "index.ts",
   "scripts": {
     "tsc": "tsc",
-    "prepublish": "rm -rf built && tsc"
+    "prepare": "rm -rf built && tsc"
   },
   "repository": {
     "type": "git",
