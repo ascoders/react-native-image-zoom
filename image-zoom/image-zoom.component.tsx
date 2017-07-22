@@ -71,17 +71,17 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
 
         this.imagePanResponder = PanResponder.create({
             // 要求成为响应者：
-            onStartShouldSetPanResponder: (evt, gestureState) => setResponder,
-            onStartShouldSetPanResponderCapture: (evt, gestureState) => {
+            onStartShouldSetPanResponder: (_evt, _gestureState) => setResponder,
+            onStartShouldSetPanResponderCapture: (_evt, gestureState) => {
                 return setResponder && gestureState.dx != 0 && gestureState.dy != 0;
             },
-            onMoveShouldSetPanResponder: (evt, gestureState) => setResponder,
-            onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+            onMoveShouldSetPanResponder: (_evt, _gestureState) => setResponder,
+            onMoveShouldSetPanResponderCapture: (_evt, gestureState) => {
                 return setResponder && gestureState.dx != 0 && gestureState.dy != 0;
             },
-            onPanResponderTerminationRequest: (evt, gestureState) => false,
+            onPanResponderTerminationRequest: (_evt, _gestureState) => false,
 
-            onPanResponderGrant: (evt, gestureState) => {
+            onPanResponderGrant: (evt, _gestureState) => {
                 // 开始手势操作
                 this.lastPositionX = null
                 this.lastPositionY = null
@@ -413,7 +413,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                     clearTimeout(this.longPressTimeout)
                 }
             },
-            onPanResponderTerminate: (evt, gestureState) => {
+            onPanResponderTerminate: (_evt, _gestureState) => {
 
             }
         })
@@ -422,7 +422,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     /**
      * 图片区域视图渲染完毕
      */
-    handleLayout(event: LayoutChangeEvent) {
+    handleLayout(_event: LayoutChangeEvent) {
         //this.centerX = event.nativeEvent.layout.x + event.nativeEvent.layout.width / 2
         //this.centerY = event.nativeEvent.layout.y + event.nativeEvent.layout.height / 2
     }
