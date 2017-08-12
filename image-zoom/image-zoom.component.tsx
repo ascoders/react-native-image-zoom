@@ -339,15 +339,6 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                     return
                 }
 
-                // 手势完成,如果是单个手指、距离上次按住只有预设秒、滑动距离小于预设值,认为是单击
-                const stayTime = new Date().getTime() - this.lastTouchStartTime
-                const moveDistance = Math.sqrt(gestureState.dx * gestureState.dx + gestureState.dy * gestureState.dy)
-                if (evt.nativeEvent.changedTouches.length === 1 && stayTime < this.props.leaveStayTime && moveDistance < this.props.leaveDistance) {
-                    this.props.onClick()
-                } else {
-                    this.props.responderRelease(gestureState.vx)
-                }
-
                 if (this.scale < 1) {
                     // 如果缩放小于1，强制重置为 1
                     this.scale = 1
@@ -412,6 +403,15 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                 if (this.longPressTimeout) {
                     clearTimeout(this.longPressTimeout)
                 }
+
+	              // 手势完成,如果是单个手指、距离上次按住只有预设秒、滑动距离小于预设值,认为是单击
+	              const stayTime = new Date().getTime() - this.lastTouchStartTime
+	              const moveDistance = Math.sqrt(gestureState.dx * gestureState.dx + gestureState.dy * gestureState.dy)
+	              if (evt.nativeEvent.changedTouches.length === 1 && stayTime < this.props.leaveStayTime && moveDistance < this.props.leaveDistance) {
+		              this.props.onClick()
+	              } else {
+		              this.props.responderRelease(gestureState.vx, this.scale)
+	              }
             },
             onPanResponderTerminate: (_evt, _gestureState) => {
 
