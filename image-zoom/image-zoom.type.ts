@@ -60,7 +60,7 @@ export interface PropsDefine extends ReactNative.ViewProperties {
     /**
      * 松手但是没有取消看图的回调
      */
-    responderRelease?: (vx: number, scale: number)=>void
+    responderRelease?: (vx?: number, scale?: number)=>void
 
     /**
      * 最大滑动阈值
