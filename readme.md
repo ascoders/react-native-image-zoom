@@ -63,4 +63,20 @@ AppRegistry.registerComponent('myproject', () => ImageZoom);
 
 ### Document
 
-![image](https://cloud.githubusercontent.com/assets/7970947/18501378/8830292a-7a82-11e6-9994-8c31ae0e6883.png)
+| Props | Type | Description | DefaultValue
+| ------ | ----------- | ----------- | ----------- |
+| **cropWidth(required)** | number | operating area width | 100 |
+| **cropHeight(required)** | number | operating area height | 100 |
+| **imageWidth(required)** | number | picture width | 100 |
+| **imageHeight(required)** | number | picture height | 100 |
+| onClick | ()=>void | onClick | ()=>{} |
+| panToMove | boolean | allow to move picture with one finger | true |
+| pinchToZoom | boolean | allow scale with two fingers | true |
+| leaveStayTime | number | how many milliseconds after the finger presses to trigger `onClick` | 100 |
+| leaveDistance | number | how many finger movement can also trigger `onClick`  | 10 |
+| horizontalOuterRangeOffset | (offsetX?: number)=>void | horizontal beyond the distance, the parent to do picture switching, you can listen to this function. When this function is triggered, you can do the switch operation | ()=>{} |
+| onDragLeft | ()=>void | trigger to switch to the left of the graph, the left sliding speed exceeds the threshold when triggered | ()=>{} |
+| responderRelease | (vx: number)=>void | let go but do not cancel | ()=>{} |
+| maxOverflow | number | maximum sliding threshold | 100 |
+| longPressTime | number | long press threshold | 800 |
+| onLongPress | ()=>void | on longPress | ()=> {} |
