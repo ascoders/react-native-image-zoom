@@ -72,13 +72,6 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
         this.imagePanResponder = PanResponder.create({
             // 要求成为响应者：
             onStartShouldSetPanResponder: (_evt, _gestureState) => setResponder,
-            onStartShouldSetPanResponderCapture: (_evt, gestureState) => {
-                return setResponder && gestureState.dx != 0 && gestureState.dy != 0;
-            },
-            onMoveShouldSetPanResponder: (_evt, _gestureState) => setResponder,
-            onMoveShouldSetPanResponderCapture: (_evt, gestureState) => {
-                return setResponder && gestureState.dx != 0 && gestureState.dy != 0;
-            },
             onPanResponderTerminationRequest: (_evt, _gestureState) => false,
 
             onPanResponderGrant: (evt, _gestureState) => {
@@ -404,14 +397,14 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                     clearTimeout(this.longPressTimeout)
                 }
 
-	              // 手势完成,如果是单个手指、距离上次按住只有预设秒、滑动距离小于预设值,认为是单击
-	              const stayTime = new Date().getTime() - this.lastTouchStartTime
-	              const moveDistance = Math.sqrt(gestureState.dx * gestureState.dx + gestureState.dy * gestureState.dy)
-	              if (evt.nativeEvent.changedTouches.length === 1 && stayTime < this.props.leaveStayTime && moveDistance < this.props.leaveDistance) {
-		              this.props.onClick()
-	              } else {
-		              this.props.responderRelease(gestureState.vx, this.scale)
-	              }
+                // 手势完成,如果是单个手指、距离上次按住只有预设秒、滑动距离小于预设值,认为是单击
+                const stayTime = new Date().getTime() - this.lastTouchStartTime
+                const moveDistance = Math.sqrt(gestureState.dx * gestureState.dx + gestureState.dy * gestureState.dy)
+                if (evt.nativeEvent.changedTouches.length === 1 && stayTime < this.props.leaveStayTime && moveDistance < this.props.leaveDistance) {
+                    this.props.onClick()
+                } else {
+                    this.props.responderRelease(gestureState.vx, this.scale)
+                }
             },
             onPanResponderTerminate: (_evt, _gestureState) => {
 
