@@ -66,6 +66,9 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     // 是否双击缩放了
     private isDoubleClickScale = false
 
+    // 双击时的间隔
+    private doubleClickInterval = 175
+
     componentWillMount() {
         const setResponder = isMobile()
 
@@ -99,7 +102,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
 
                 if (evt.nativeEvent.changedTouches.length <= 1) {
                     // 一个手指的情况
-                    if (new Date().getTime() - this.lastClickTime < 175) {
+                    if (new Date().getTime() - this.lastClickTime < (this.props.doubleClickInterval || this.doubleClickInterval)) {
                         // 认为触发了双击
                         this.lastClickTime = 0
                         this.props.onDoubleClick()
@@ -401,7 +404,14 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                 const stayTime = new Date().getTime() - this.lastTouchStartTime
                 const moveDistance = Math.sqrt(gestureState.dx * gestureState.dx + gestureState.dy * gestureState.dy)
                 if (evt.nativeEvent.changedTouches.length === 1 && stayTime < this.props.leaveStayTime && moveDistance < this.props.leaveDistance) {
-                    this.props.onClick()
+                    const onClick = () => {
+                        // 确认不是双击
+                        if (this.lastClickTime > 0) {
+                            this.props.onClick();
+                        }
+                    }
+
+                    setTimeout(onClick, this.props.doubleClickInterval || this.doubleClickInterval);
                 } else {
                     this.props.responderRelease(gestureState.vx, this.scale)
                 }
