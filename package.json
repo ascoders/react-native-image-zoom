@@ -1,6 +1,6 @@
 {
   "name": "react-native-image-pan-zoom",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "图片手势操作",
   "main": "built/index.js",
   "typings": "index.ts",
