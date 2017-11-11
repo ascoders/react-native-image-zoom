@@ -83,6 +83,11 @@ export interface PropsDefine extends ReactNative.ViewProperties {
     onDoubleClick?: ()=>void
 
     /**
+     * 双击时的间隔
+     */
+    doubleClickInterval?: number
+
+    /**
      * 透传
      */
     others?: any
@@ -116,6 +121,7 @@ export class Props extends PropsGaea implements PropsDefine {
     }
     onDoubleClick = ()=> {
     }
+    doubleClickInterval = 175
 }
 
 export interface StateDefine {
@@ -133,4 +139,4 @@ export class State implements StateDefine {
     centerX = 0.5
     centerY = 0.5
 }
-                
+
