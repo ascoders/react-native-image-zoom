@@ -81,3 +81,4 @@ AppRegistry.registerComponent('myproject', () => ImageZoom);
 | longPressTime | number | long press threshold | 800 |
 | onLongPress | ()=>void | on longPress | ()=> {} |
 | doubleClickInterval | number | time allocated for second click to be considered as doublClick event | 175 |
+| onMove | (object)=>void | reports movement position data (helpful to build overlays) | ()=> {} |  
