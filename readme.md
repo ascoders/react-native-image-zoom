@@ -36,10 +36,8 @@ $ react-native init myproject
 import React, { Component } from 'react';
 import {
   AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  Modal
+  Image,
+  Dimensions
 } from 'react-native';
 
 import ImageZoom from 'react-native-image-pan-zoom';
