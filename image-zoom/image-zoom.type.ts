@@ -83,6 +83,16 @@ export interface PropsDefine extends ReactNative.ViewProperties {
     onDoubleClick?: ()=>void
 
     /**
+     * If provided, this will be called everytime the map is moved
+     */
+    onMove?: (position?: object)=>void
+
+    /**
+     * If provided, this method will be called when the onLayout event fires
+     */
+    layoutChange?: (event?: object)=>void
+
+    /**
      * 双击时的间隔
      */
     doubleClickInterval?: number
@@ -139,4 +149,3 @@ export class State implements StateDefine {
     centerX = 0.5
     centerY = 0.5
 }
-

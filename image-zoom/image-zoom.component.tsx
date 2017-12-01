@@ -325,6 +325,16 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                         this.zoomLastDistance = this.zoomCurrentDistance
                     }
                 }
+
+                if(this.props.onMove) {
+                  this.props.onMove({
+                    type: 'onPanResponderMove',
+                    positionX: this.positionX,
+                    positionY: this.positionY,
+                    scale: this.scale,
+                    zoomCurrentDistance: this.zoomCurrentDistance,
+                  })
+                }
             },
             onPanResponderRelease: (evt, gestureState) => {
                 // 双击缩放了，结束手势就不需要操作了
@@ -412,6 +422,16 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                 } else {
                     this.props.responderRelease(gestureState.vx, this.scale)
                 }
+
+                if(this.props.onMove) {
+                  this.props.onMove({
+                    type: 'onPanResponderRelease',
+                    positionX: this.positionX,
+                    positionY: this.positionY,
+                    scale: this.scale,
+                    zoomCurrentDistance: this.zoomCurrentDistance,
+                  })
+                }
             },
             onPanResponderTerminate: (_evt, _gestureState) => {
 
@@ -425,6 +445,9 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     handleLayout(_event: LayoutChangeEvent) {
         //this.centerX = event.nativeEvent.layout.x + event.nativeEvent.layout.width / 2
         //this.centerY = event.nativeEvent.layout.y + event.nativeEvent.layout.height / 2
+        if(this.props.layoutChange) {
+            this.props.layoutChange(_event);
+        }
     }
 
     /**
