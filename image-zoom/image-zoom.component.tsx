@@ -17,19 +17,19 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     public state: typings.StateDefine = new typings.State()
 
     // 上次/当前/动画 x 位移
-    private lastPositionX: number = null
+    private lastPositionX: number | null = null
     private positionX = 0
     private animatedPositionX = new Animated.Value(0)
 
     // 上次/当前/动画 y 位移
-    private lastPositionY: number = null
+    private lastPositionY: number | null = null
     private positionY = 0
     private animatedPositionY = new Animated.Value(0)
 
     // 缩放大小
     private scale = 1
     private animatedScale = new Animated.Value(1)
-    private zoomLastDistance: number = null
+    private zoomLastDistance: number | null = null
     private zoomCurrentDistance = 0
 
     // 图片手势处理
@@ -94,15 +94,19 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                     clearTimeout(this.longPressTimeout)
                 }
                 this.longPressTimeout = setTimeout(() => {
-                    this.props.onLongPress()
+                    if (this.props.onLongPress) {
+                        this.props.onLongPress()
+                    }
                 }, this.props.longPressTime)
 
                 if (evt.nativeEvent.changedTouches.length <= 1) {
                     // 一个手指的情况
-                    if (new Date().getTime() - this.lastClickTime < (this.props.doubleClickInterval)) {
+                    if (new Date().getTime() - this.lastClickTime < (this.props.doubleClickInterval || 0)) {
                         // 认为触发了双击
                         this.lastClickTime = 0
-                        this.props.onDoubleClick()
+                        if (this.props.onDoubleClick) {
+                            this.props.onDoubleClick()
+                        }
 
                         // 取消长按
                         clearTimeout(this.longPressTimeout)
@@ -157,12 +161,12 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
             onPanResponderMove: (evt, gestureState) => {
                 if (evt.nativeEvent.changedTouches.length <= 1) {
                     // x 位移
-                    let diffX = gestureState.dx - this.lastPositionX
+                    let diffX = gestureState.dx - (this.lastPositionX || 0)
                     if (this.lastPositionX === null) {
                         diffX = 0
                     }
                     // y 位移
-                    let diffY = gestureState.dy - this.lastPositionY
+                    let diffY = gestureState.dy - (this.lastPositionY || 0)
                     if (this.lastPositionY === null) {
                         diffY = 0
                     }
@@ -194,7 +198,9 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                                         // 溢出量置为0，偏移量减去剩余溢出量，并且可以被拖动
                                         diffX += this.horizontalWholeOuterCounter
                                         this.horizontalWholeOuterCounter = 0
-                                        this.props.horizontalOuterRangeOffset(0)
+                                        if (this.props.horizontalOuterRangeOffset) {
+                                            this.props.horizontalOuterRangeOffset(0)
+                                        }
                                     }
                                 } else { // 向右侧扩增
                                     this.horizontalWholeOuterCounter += diffX
@@ -210,7 +216,9 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                                         // 溢出量置为0，偏移量减去剩余溢出量，并且可以被拖动
                                         diffX += this.horizontalWholeOuterCounter
                                         this.horizontalWholeOuterCounter = 0
-                                        this.props.horizontalOuterRangeOffset(0)
+                                        if (this.props.horizontalOuterRangeOffset) {
+                                            this.props.horizontalOuterRangeOffset(0)
+                                        }
                                     }
                                 } else { // 向左侧扩增
                                     this.horizontalWholeOuterCounter += diffX
@@ -243,15 +251,17 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                         }
 
                         // 溢出量不会超过设定界限
-                        if (this.horizontalWholeOuterCounter > this.props.maxOverflow) {
-                            this.horizontalWholeOuterCounter = this.props.maxOverflow
-                        } else if (this.horizontalWholeOuterCounter < -this.props.maxOverflow) {
-                            this.horizontalWholeOuterCounter = -this.props.maxOverflow
+                        if (this.horizontalWholeOuterCounter > (this.props.maxOverflow || 0)) {
+                            this.horizontalWholeOuterCounter = this.props.maxOverflow || 0
+                        } else if (this.horizontalWholeOuterCounter < -(this.props.maxOverflow || 0)) {
+                            this.horizontalWholeOuterCounter = -(this.props.maxOverflow || 0)
                         }
 
                         if (this.horizontalWholeOuterCounter !== 0) {
                             // 如果溢出偏移量不是0，执行溢出回调
-                            this.props.horizontalOuterRangeOffset(this.horizontalWholeOuterCounter)
+                            if (this.props.horizontalOuterRangeOffset) {
+                                this.props.horizontalOuterRangeOffset(this.horizontalWholeOuterCounter)
+                            }
                         }
 
                         if (this.props.imageHeight * this.scale > this.props.cropHeight) {
@@ -326,14 +336,14 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                     }
                 }
 
-                if(this.props.onMove) {
-                  this.props.onMove({
-                    type: 'onPanResponderMove',
-                    positionX: this.positionX,
-                    positionY: this.positionY,
-                    scale: this.scale,
-                    zoomCurrentDistance: this.zoomCurrentDistance,
-                  })
+                if (this.props.onMove) {
+                    this.props.onMove({
+                        type: 'onPanResponderMove',
+                        positionX: this.positionX,
+                        positionY: this.positionY,
+                        scale: this.scale,
+                        zoomCurrentDistance: this.zoomCurrentDistance,
+                    })
                 }
             },
             onPanResponderRelease: (evt, gestureState) => {
@@ -410,27 +420,31 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                 // 手势完成,如果是单个手指、距离上次按住只有预设秒、滑动距离小于预设值,认为是单击
                 const stayTime = new Date().getTime() - this.lastTouchStartTime
                 const moveDistance = Math.sqrt(gestureState.dx * gestureState.dx + gestureState.dy * gestureState.dy)
-                if (evt.nativeEvent.changedTouches.length === 1 && stayTime < this.props.leaveStayTime && moveDistance < this.props.leaveDistance) {
+                if (evt.nativeEvent.changedTouches.length === 1 && stayTime < (this.props.leaveStayTime || 0) && moveDistance < (this.props.leaveDistance || 0)) {
                     const onClick = () => {
                         // 确认不是双击
                         if (this.lastClickTime > 0) {
-                            this.props.onClick();
+                            if (this.props.onClick) {
+                                this.props.onClick();
+                            }
                         }
                     }
 
                     setTimeout(onClick, this.props.doubleClickInterval);
                 } else {
-                    this.props.responderRelease(gestureState.vx, this.scale)
+                    if (this.props.responderRelease) {
+                        this.props.responderRelease(gestureState.vx, this.scale)
+                    }
                 }
 
-                if(this.props.onMove) {
-                  this.props.onMove({
-                    type: 'onPanResponderRelease',
-                    positionX: this.positionX,
-                    positionY: this.positionY,
-                    scale: this.scale,
-                    zoomCurrentDistance: this.zoomCurrentDistance,
-                  })
+                if (this.props.onMove) {
+                    this.props.onMove({
+                        type: 'onPanResponderRelease',
+                        positionX: this.positionX,
+                        positionY: this.positionY,
+                        scale: this.scale,
+                        zoomCurrentDistance: this.zoomCurrentDistance,
+                    })
                 }
             },
             onPanResponderTerminate: (_evt, _gestureState) => {
@@ -445,7 +459,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     handleLayout(_event: LayoutChangeEvent) {
         //this.centerX = event.nativeEvent.layout.x + event.nativeEvent.layout.width / 2
         //this.centerY = event.nativeEvent.layout.y + event.nativeEvent.layout.height / 2
-        if(this.props.layoutChange) {
+        if (this.props.layoutChange) {
             this.props.layoutChange(_event);
         }
     }

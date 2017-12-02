@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "target": "es6",
@@ -16,12 +15,8 @@
     "outDir": "built",
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
-  },
-  "awesomeTypescriptLoaderOptions": {
-    "useWebpackText": true,
-    "forkChecker": true,
-    "useCache": true
+    "emitDecoratorMetadata": true,
+    "strict": true
   },
   "compileOnSave": true,
   "buildOnSave": true,
