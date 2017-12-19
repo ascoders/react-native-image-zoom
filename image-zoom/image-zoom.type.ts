@@ -93,6 +93,12 @@ export interface PropsDefine extends ReactNative.ViewProperties {
     layoutChange?: (event?: object) => void
 
     /**
+    * If provided this will cause the view to zoom and pan to the center point
+    * Duration is optional and defaults to 300 ms.
+    */
+    centerOn?: { x: number, y: number, scale: number, duration: number }
+
+    /**
      * 双击时的间隔
      */
     doubleClickInterval?: number
@@ -132,6 +138,7 @@ export class Props extends PropsGaea implements PropsDefine {
     onDoubleClick = () => {
     }
     doubleClickInterval = 175
+    centerOn = undefined
 }
 
 export interface StateDefine {

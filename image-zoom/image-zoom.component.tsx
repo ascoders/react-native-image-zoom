@@ -336,15 +336,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                     }
                 }
 
-                if (this.props.onMove) {
-                    this.props.onMove({
-                        type: 'onPanResponderMove',
-                        positionX: this.positionX,
-                        positionY: this.positionY,
-                        scale: this.scale,
-                        zoomCurrentDistance: this.zoomCurrentDistance,
-                    })
-                }
+                this.imageDidMove('onPanResponderMove')
             },
             onPanResponderRelease: (evt, gestureState) => {
                 // 双击缩放了，结束手势就不需要操作了
@@ -437,20 +429,70 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                     }
                 }
 
-                if (this.props.onMove) {
-                    this.props.onMove({
-                        type: 'onPanResponderRelease',
-                        positionX: this.positionX,
-                        positionY: this.positionY,
-                        scale: this.scale,
-                        zoomCurrentDistance: this.zoomCurrentDistance,
-                    })
-                }
+                this.imageDidMove('onPanResponderRelease')
             },
             onPanResponderTerminate: (_evt, _gestureState) => {
 
             }
         })
+    }
+
+    componentDidMount() {
+        if(this.props.centerOn) {
+          this.centerOn(this.props.centerOn)
+        }
+    }
+
+    componentWillReceiveProps(nextProps: typings.PropsDefine) {
+      // Either centerOn has never been called, or it is a repeat and we should ignore it
+      if((nextProps.centerOn && !this.props.centerOn) ||
+        (nextProps.centerOn && this.props.centerOn &&
+        this.didCenterOnChange(this.props.centerOn, nextProps.centerOn))) {
+        this.centerOn(nextProps.centerOn)
+      }
+    }
+
+    imageDidMove(type: string) {
+      if (this.props.onMove) {
+        this.props.onMove({
+            type: type,
+            positionX: this.positionX,
+            positionY: this.positionY,
+            scale: this.scale,
+            zoomCurrentDistance: this.zoomCurrentDistance,
+        })
+      }
+    }
+
+    didCenterOnChange(
+        params: { x: number, y: number, scale: number, duration: number },
+        paramsNext: { x: number, y: number, scale: number, duration: number }) {
+      return params.x !== paramsNext.x ||
+        params.y !== paramsNext.y ||
+        params.scale !== paramsNext.scale
+    }
+
+    centerOn(params: { x: number, y: number, scale: number, duration: number }) {
+      this.positionX = params!.x
+      this.positionY = params!.y
+      this.scale = params!.scale
+      var duration = params!.duration || 300
+      Animated.parallel([
+        Animated.timing(this.animatedScale, {
+            toValue: this.scale,
+            duration: duration,
+        }),
+        Animated.timing(this.animatedPositionX, {
+            toValue: this.positionX,
+            duration: duration,
+        }),
+        Animated.timing(this.animatedPositionY, {
+            toValue: this.positionY,
+            duration: duration,
+        })
+      ]).start(() => {
+        this.imageDidMove('centerOn')
+      })
     }
 
     /**
