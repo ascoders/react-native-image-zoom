@@ -80,3 +80,4 @@ AppRegistry.registerComponent('myproject', () => ImageZoom);
 | onLongPress | ()=>void | on longPress | ()=> {} |
 | doubleClickInterval | number | time allocated for second click to be considered as doublClick event | 175 |
 | onMove | (object)=>void | reports movement position data (helpful to build overlays) | ()=> {} |  
+| centerOn | { x: number, y: number, scale: number, duration: number } | if given this will cause the map to pan and zoom to the desired location | undefined
