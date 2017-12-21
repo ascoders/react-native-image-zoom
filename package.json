@@ -1,12 +1,16 @@
 {
   "name": "react-native-image-pan-zoom",
-  "version": "2.0.9",
-  "description": "图片手势操作",
+  "version": "2.0.10",
+  "description": "react native image pan zoom",
   "main": "built/index.js",
   "typings": "index.ts",
   "scripts": {
     "tsc": "tsc",
-    "prepare": "rm -rf built && tsc"
+    "prepare": "rm -rf built && tsc",
+    "start": "react-native-scripts start"
+  },
+  "jest": {
+    "preset": "jest-expo"
   },
   "repository": {
     "type": "git",
@@ -17,14 +21,19 @@
   ],
   "author": "ascoders",
   "license": "ISC",
-  "dependencies": {},
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react": "*"
   },
   "devDependencies": {
-    "@types/react": "^15.6.7",
-    "@types/react-native": "^0.46.11",
+    "@types/react": "*",
+    "@types/react-native": "*",
+    "expo": "^23.0.4",
+    "jest-expo": "23.0.0",
+    "react-native-scripts": "1.8.1",
+    "react-test-renderer": "16.0.0",
+    "react": "16.0.0",
+    "react-native": "0.50.3",
     "typescript": "^2.4.2"
   }
 }

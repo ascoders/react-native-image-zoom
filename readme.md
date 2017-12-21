@@ -81,3 +81,16 @@ AppRegistry.registerComponent('myproject', () => ImageZoom);
 | doubleClickInterval | number | time allocated for second click to be considered as doublClick event | 175 |
 | onMove | (object)=>void | reports movement position data (helpful to build overlays) | ()=> {} |  
 | centerOn | { x: number, y: number, scale: number, duration: number } | if given this will cause the map to pan and zoom to the desired location | undefined
+
+### Debug in this project
+
+Make sure you had installed `react-native` with `-g` before.
+
+```bash
+git clone https://github.com/ascoders/react-native-image-zoom.git
+cd react-native-image-zoom/demo
+npm install
+npm start
+```
+
+Then, scan the QR, use your [expo app](https://expo.io./).
