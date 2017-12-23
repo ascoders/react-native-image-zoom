@@ -74,16 +74,18 @@ export default class App extends React.Component {
 | onMove | (object)=>void | reports movement position data (helpful to build overlays) | ()=> {} |  
 | centerOn | { x: number, y: number, scale: number, duration: number } | if given this will cause the map to pan and zoom to the desired location | undefined
 
-### Development pattern
+## Development pattern
 
-#### Step 1, open TS listener
+### Step 1, run TS listener
+
+After clone this repo, then:
 
 ```bash
 npm install
 npm start
 ```
 
-#### Step 2, running demo
+### Step 2, run demo
 
 ```bash
 cd demo
