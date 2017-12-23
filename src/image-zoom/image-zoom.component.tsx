@@ -537,7 +537,15 @@ export default class ImageViewer extends React.Component<Props, State> {
         }
 
         return (
-            <View style={{ ...styles.container, width: this.props.cropWidth, height: this.props.cropHeight }} {...this.imagePanResponder.panHandlers}>
+            <View
+                style={{
+                    ...styles.container,
+                    ...this.props.style,
+                    width: this.props.cropWidth,
+                    height: this.props.cropHeight
+                }}
+                {...this.imagePanResponder.panHandlers}
+            >
                 <Animated.View style={animateConf}>
                     <View onLayout={this.handleLayout.bind(this)}
                         style={{ width: this.props.imageWidth, height: this.props.imageHeight }}>

@@ -1,3 +1,5 @@
+import { ViewStyle } from "react-native"
+
 export interface ICenterOn {
     x: number
     y: number
@@ -67,10 +69,7 @@ export class Props {
      */
     public centerOn?: ICenterOn
 
-    /**
-     * 透传
-     */
-    public others?: any = null
+    public style?: ViewStyle = {}
 
     /**
      * 单击的回调
