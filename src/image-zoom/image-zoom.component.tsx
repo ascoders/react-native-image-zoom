@@ -1,10 +1,10 @@
-import * as React from 'react'
-import { View, PanResponder, Animated, Platform, PlatformOSType, PanResponderInstance, LayoutChangeEvent } from 'react-native'
-import * as typings from './image-zoom.type'
-import styles from './image-zoom.style'
+import * as React from "react"
+import { Animated, LayoutChangeEvent, PanResponder, PanResponderInstance, Platform, PlatformOSType, View } from "react-native"
+import styles from "./image-zoom.style"
+import { ICenterOn, Props, State } from "./image-zoom.type"
 
 const isMobile = () => {
-    if (Platform.OS === 'web' as PlatformOSType) {
+    if (Platform.OS === "web" as PlatformOSType) {
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
     } else {
         return true
@@ -12,9 +12,9 @@ const isMobile = () => {
 }
 
 //
-export default class ImageViewer extends React.Component<typings.PropsDefine, typings.StateDefine> {
-    static defaultProps: typings.PropsDefine = new typings.Props()
-    public state: typings.StateDefine = new typings.State()
+export default class ImageViewer extends React.Component<Props, State> {
+    public static defaultProps = new Props()
+    public state = new State()
 
     // 上次/当前/动画 x 位移
     private lastPositionX: number | null = null
@@ -36,8 +36,8 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     private imagePanResponder: PanResponderInstance
 
     // 图片视图当前中心的位置
-    //private centerX: number
-    //private centerY: number
+    // private centerX: number
+    // private centerY: number
 
     // 上次手按下去的时间
     private lastTouchStartTime: number
@@ -66,15 +66,15 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
     // 是否双击缩放了
     private isDoubleClickScale = false
 
-    componentWillMount() {
+    public componentWillMount() {
         const setResponder = isMobile()
 
         this.imagePanResponder = PanResponder.create({
             // 要求成为响应者：
-            onStartShouldSetPanResponder: (_evt, _gestureState) => setResponder,
-            onPanResponderTerminationRequest: (_evt, _gestureState) => false,
+            onStartShouldSetPanResponder: (evt, gestureState) => setResponder,
+            onPanResponderTerminationRequest: (evt, gestureState) => false,
 
-            onPanResponderGrant: (evt, _gestureState) => {
+            onPanResponderGrant: (evt, gestureState) => {
                 // 开始手势操作
                 this.lastPositionX = null
                 this.lastPositionY = null
@@ -85,8 +85,11 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                 this.isDoubleClickScale = false
 
                 if (evt.nativeEvent.changedTouches.length > 1) {
-                    this.centerDiffX = (evt.nativeEvent.changedTouches[0].pageX + evt.nativeEvent.changedTouches[1].pageX) / 2 - this.props.cropWidth / 2
-                    this.centerDiffY = (evt.nativeEvent.changedTouches[0].pageY + evt.nativeEvent.changedTouches[1].pageY) / 2 - this.props.cropHeight / 2
+                    const centerX = (evt.nativeEvent.changedTouches[0].pageX + evt.nativeEvent.changedTouches[1].pageX) / 2
+                    this.centerDiffX = centerX - this.props.cropWidth / 2
+
+                    const centerY = (evt.nativeEvent.changedTouches[0].pageY + evt.nativeEvent.changedTouches[1].pageY) / 2
+                    this.centerDiffY = centerY - this.props.cropHeight / 2
                 }
 
                 // 计算长按
@@ -305,7 +308,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                         this.zoomCurrentDistance = Number(diagonalDistance.toFixed(1))
 
                         if (this.zoomLastDistance !== null) {
-                            let distanceDiff = (this.zoomCurrentDistance - this.zoomLastDistance) / 200
+                            const distanceDiff = (this.zoomCurrentDistance - this.zoomLastDistance) / 200
                             let zoom = this.scale + distanceDiff
 
                             if (zoom < 0.6) {
@@ -336,7 +339,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                     }
                 }
 
-                this.imageDidMove('onPanResponderMove')
+                this.imageDidMove("onPanResponderMove")
             },
             onPanResponderRelease: (evt, gestureState) => {
                 // 双击缩放了，结束手势就不需要操作了
@@ -412,7 +415,11 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                 // 手势完成,如果是单个手指、距离上次按住只有预设秒、滑动距离小于预设值,认为是单击
                 const stayTime = new Date().getTime() - this.lastTouchStartTime
                 const moveDistance = Math.sqrt(gestureState.dx * gestureState.dx + gestureState.dy * gestureState.dy)
-                if (evt.nativeEvent.changedTouches.length === 1 && stayTime < (this.props.leaveStayTime || 0) && moveDistance < (this.props.leaveDistance || 0)) {
+                if (
+                    evt.nativeEvent.changedTouches.length === 1 &&
+                    stayTime < (this.props.leaveStayTime || 0) &&
+                    moveDistance < (this.props.leaveDistance || 0)
+                ) {
                     const onClick = () => {
                         // 确认不是双击
                         if (this.lastClickTime > 0) {
@@ -429,80 +436,80 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
                     }
                 }
 
-                this.imageDidMove('onPanResponderRelease')
+                this.imageDidMove("onPanResponderRelease")
             },
-            onPanResponderTerminate: (_evt, _gestureState) => {
-
+            onPanResponderTerminate: (evt, gestureState) => {
+                //
             }
         })
     }
 
-    componentDidMount() {
-        if(this.props.centerOn) {
-          this.centerOn(this.props.centerOn)
+    public componentDidMount() {
+        if (this.props.centerOn) {
+            this.centerOn(this.props.centerOn)
         }
     }
 
-    componentWillReceiveProps(nextProps: typings.PropsDefine) {
-      // Either centerOn has never been called, or it is a repeat and we should ignore it
-      if((nextProps.centerOn && !this.props.centerOn) ||
-        (nextProps.centerOn && this.props.centerOn &&
-        this.didCenterOnChange(this.props.centerOn, nextProps.centerOn))) {
-        this.centerOn(nextProps.centerOn)
-      }
+    public componentWillReceiveProps(nextProps: Props) {
+        // Either centerOn has never been called, or it is a repeat and we should ignore it
+        if ((nextProps.centerOn && !this.props.centerOn) ||
+            (nextProps.centerOn && this.props.centerOn &&
+                this.didCenterOnChange(this.props.centerOn, nextProps.centerOn))) {
+            this.centerOn(nextProps.centerOn)
+        }
     }
 
-    imageDidMove(type: string) {
-      if (this.props.onMove) {
-        this.props.onMove({
-            type: type,
-            positionX: this.positionX,
-            positionY: this.positionY,
-            scale: this.scale,
-            zoomCurrentDistance: this.zoomCurrentDistance,
-        })
-      }
+    public imageDidMove(type: string) {
+        if (this.props.onMove) {
+            this.props.onMove({
+                type,
+                positionX: this.positionX,
+                positionY: this.positionY,
+                scale: this.scale,
+                zoomCurrentDistance: this.zoomCurrentDistance,
+            })
+        }
     }
 
-    didCenterOnChange(
+    public didCenterOnChange(
         params: { x: number, y: number, scale: number, duration: number },
         paramsNext: { x: number, y: number, scale: number, duration: number }) {
-      return params.x !== paramsNext.x ||
-        params.y !== paramsNext.y ||
-        params.scale !== paramsNext.scale
+        return params.x !== paramsNext.x ||
+            params.y !== paramsNext.y ||
+            params.scale !== paramsNext.scale
     }
 
-    centerOn(params: { x: number, y: number, scale: number, duration: number }) {
-      this.positionX = params!.x
-      this.positionY = params!.y
-      this.scale = params!.scale
-      var duration = params!.duration || 300
-      Animated.parallel([
-        Animated.timing(this.animatedScale, {
-            toValue: this.scale,
-            duration: duration,
-        }),
-        Animated.timing(this.animatedPositionX, {
-            toValue: this.positionX,
-            duration: duration,
-        }),
-        Animated.timing(this.animatedPositionY, {
-            toValue: this.positionY,
-            duration: duration,
+    public centerOn(params: ICenterOn) {
+        this.positionX = params!.x
+        this.positionY = params!.y
+        this.scale = params!.scale
+        const duration = params!.duration || 300
+        Animated.parallel([
+            Animated.timing(this.animatedScale, {
+                toValue: this.scale,
+                duration,
+            }),
+            Animated.timing(this.animatedPositionX, {
+                toValue: this.positionX,
+                duration,
+            }),
+            Animated.timing(this.animatedPositionY, {
+                toValue: this.positionY,
+                duration,
+            })
+        ]).start(() => {
+            this.imageDidMove("centerOn")
         })
-      ]).start(() => {
-        this.imageDidMove('centerOn')
-      })
     }
 
     /**
      * 图片区域视图渲染完毕
      */
-    handleLayout(_event: LayoutChangeEvent) {
-        //this.centerX = event.nativeEvent.layout.x + event.nativeEvent.layout.width / 2
-        //this.centerY = event.nativeEvent.layout.y + event.nativeEvent.layout.height / 2
+    public handleLayout(event: LayoutChangeEvent) {
+        // this.centerX = event.nativeEvent.layout.x + event.nativeEvent.layout.width / 2
+        // this.centerY = event.nativeEvent.layout.y + event.nativeEvent.layout.height / 2
         if (this.props.layoutChange) {
-            this.props.layoutChange(_event);
+            this.props.layoutChange(event);
         }
     }
 
@@ -518,7 +525,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
         this.animatedPositionY.setValue(this.positionY)
     }
 
-    render() {
+    public render() {
         const animateConf = {
             transform: [{
                 scale: this.animatedScale
@@ -530,7 +537,7 @@ export default class ImageViewer extends React.Component<typings.PropsDefine, ty
         }
 
         return (
-            <View style={Object.assign({}, styles.container, { width: this.props.cropWidth, height: this.props.cropHeight })} {...this.imagePanResponder.panHandlers}>
+            <View style={{ ...styles.container, width: this.props.cropWidth, height: this.props.cropHeight }} {...this.imagePanResponder.panHandlers}>
                 <Animated.View style={animateConf}>
                     <View onLayout={this.handleLayout.bind(this)}
                         style={{ width: this.props.imageWidth, height: this.props.imageHeight }}>

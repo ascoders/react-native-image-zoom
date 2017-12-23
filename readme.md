@@ -18,31 +18,25 @@ npm i react-native-image-pan-zoom --save
 
 ### Basic Usage
 
-- Install react-native first
+- Install create-react-native-app first
 
 ```bash
-$ npm i react-native -g
+$ npm install -g create-react-native-app
 ```
 
 - Initialization of a react-native project
 
 ```bash
-$ react-native init myproject
+$ create-react-native-app AwesomeProject
 ```
 
-- Then, edit myproject/index.ios.js, like this:
+- Then, edit `AwesomeProject/App.js`, like this:
 
 ```typescript
-import React, { Component } from 'react';
-import {
-  AppRegistry,
-  Image,
-  Dimensions
-} from 'react-native';
-
+import { Image, Dimensions } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 
-class ImageZoom extends React.Component {
+export default class App extends React.Component {
     render: function() {
         return (
             <ImageZoom cropWidth={Dimensions.get('window').width}
@@ -55,8 +49,6 @@ class ImageZoom extends React.Component {
         )
     }
 }
-
-AppRegistry.registerComponent('myproject', () => ImageZoom);
 ```
 
 ### Document
@@ -82,15 +74,21 @@ AppRegistry.registerComponent('myproject', () => ImageZoom);
 | onMove | (object)=>void | reports movement position data (helpful to build overlays) | ()=> {} |  
 | centerOn | { x: number, y: number, scale: number, duration: number } | if given this will cause the map to pan and zoom to the desired location | undefined
 
-### Debug in this project
+### Development pattern
 
-Make sure you had installed `react-native` with `-g` before.
+#### Step 1, open TS listener
 
 ```bash
-git clone https://github.com/ascoders/react-native-image-zoom.git
-cd react-native-image-zoom/demo
 npm install
 npm start
 ```
 
-Then, scan the QR, use your [expo app](https://expo.io./).
+#### Step 2, running demo
+
+```bash
+cd demo
+npm install
+npm start
+```
+
+Then, scan the QR, use your [expo app](https://expo.io./). 

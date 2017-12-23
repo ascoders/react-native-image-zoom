@@ -1,7 +1,0 @@
-{
-  "expo": {
-    "sdkVersion": "23.0.0",
-    "entryPoint": "./demo.js",
-    "nodeModulesPath": "./"
-  }
-}
