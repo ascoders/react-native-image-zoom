@@ -175,6 +175,7 @@ export default class ImageViewer extends React.Component<Props, State> {
                 (this.props.cropWidth / 2 - this.doubleClickX) *
                 diffScale /
                 this.scale
+
               this.positionY =
                 (this.props.cropHeight / 2 - this.doubleClickY) *
                 diffScale /
@@ -201,6 +202,11 @@ export default class ImageViewer extends React.Component<Props, State> {
         }
       },
       onPanResponderMove: (evt, gestureState) => {
+        if (this.isDoubleClick) {
+          // 有时双击会被当做位移，这里屏蔽掉
+          return
+        }
+
         if (evt.nativeEvent.changedTouches.length <= 1) {
           // x 位移
           let diffX = gestureState.dx - (this.lastPositionX || 0)
