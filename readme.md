@@ -62,8 +62,7 @@ export default class App extends React.Component {
 | onClick | ()=>void | onClick | ()=>{} |
 | panToMove | boolean | allow to move picture with one finger | true |
 | pinchToZoom | boolean | allow scale with two fingers | true |
-| leaveStayTime | number | how many milliseconds after the finger presses to trigger `onClick` | 100 |
-| leaveDistance | number | how many finger movement can also trigger `onClick`  | 10 |
+| clickDistance | number | how many finger movement can also trigger `onClick`  | 10 |
 | horizontalOuterRangeOffset | (offsetX?: number)=>void | horizontal beyond the distance, the parent to do picture switching, you can listen to this function. When this function is triggered, you can do the switch operation | ()=>{} |
 | onDragLeft | ()=>void | trigger to switch to the left of the graph, the left sliding speed exceeds the threshold when triggered | ()=>{} |
 | responderRelease | (vx: number)=>void | let go but do not cancel | ()=>{} |
