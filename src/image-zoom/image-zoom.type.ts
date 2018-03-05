@@ -28,6 +28,10 @@ export class Props {
    */
   public imageHeight: number = 100
 
+  public imageMinScale: number = 1;
+
+  public imageMaxScale: number = 10;
+
   /**
    * 单手是否能移动图片
    */
