@@ -43,14 +43,14 @@ export default class ImageViewer extends React.Component<Props, State> {
   private zoomCurrentDistance = 0
 
   // 图片手势处理
-  private imagePanResponder: PanResponderInstance
+  private imagePanResponder: PanResponderInstance | null = null
 
   // 图片视图当前中心的位置
   // private centerX: number
   // private centerY: number
 
   // 上次手按下去的时间
-  private lastTouchStartTime: number
+  private lastTouchStartTime: number = 0
 
   // 滑动过程中，整体横向过界偏移量
   private horizontalWholeOuterCounter = 0
@@ -432,7 +432,7 @@ export default class ImageViewer extends React.Component<Props, State> {
         }
 
         // 如果是单个手指、距离上次按住大于预设秒、滑动距离小于预设值, 则可能是单击（如果后续双击间隔内没有开始手势）
-        const stayTime = new Date().getTime() - this.lastTouchStartTime
+        // const stayTime = new Date().getTime() - this.lastTouchStartTime!
         const moveDistance = Math.sqrt(
           gestureState.dx * gestureState.dx + gestureState.dy * gestureState.dy
         )
@@ -637,7 +637,7 @@ export default class ImageViewer extends React.Component<Props, State> {
           width: this.props.cropWidth,
           height: this.props.cropHeight
         }}
-        {...this.imagePanResponder.panHandlers}
+        {...this.imagePanResponder!.panHandlers}
       >
         <Animated.View style={animateConf}>
           <View
