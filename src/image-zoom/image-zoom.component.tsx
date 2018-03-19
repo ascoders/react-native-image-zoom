@@ -460,6 +460,13 @@ export default class ImageViewer extends React.Component<Props, State> {
     })
   }
 
+  public resetScale = () => {
+    this.positionX = 0
+    this.positionY = 0
+    this.scale = 1
+    this.animatedScale.setValue(1)
+  }
+
   public panResponderReleaseResolve = () => {
     if (this.scale < 1) {
       // 如果缩放小于1，强制重置为 1
