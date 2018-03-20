@@ -10,6 +10,7 @@ export default class App extends React.Component {
         cropHeight={Dimensions.get("window").height}
         imageWidth={Dimensions.get("window").width}
         imageHeight={Dimensions.get("window").width}
+        enableSwipeDown={true}
       >
         <Image
           style={{

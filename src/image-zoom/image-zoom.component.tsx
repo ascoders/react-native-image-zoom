@@ -45,15 +45,14 @@ export default class ImageViewer extends React.Component<Props, State> {
   // 图片手势处理
   private imagePanResponder: PanResponderInstance | null = null
 
-  // 图片视图当前中心的位置
-  // private centerX: number
-  // private centerY: number
-
   // 上次手按下去的时间
   private lastTouchStartTime: number = 0
 
   // 滑动过程中，整体横向过界偏移量
   private horizontalWholeOuterCounter = 0
+
+  // 滑动过程中，swipeDown 偏移量
+  private swipeDownOffset = 0
 
   // 滑动过程中，x y的总位移
   private horizontalWholeCounter = 0
@@ -332,10 +331,45 @@ export default class ImageViewer extends React.Component<Props, State> {
               }
             }
 
+            // 如果图片高度大于盒子高度， 可以纵向弹性拖拽
             if (this.props.imageHeight * this.scale > this.props.cropHeight) {
-              // 如果图片高度大图盒子高度， 可以纵向拖拽
               this.positionY += diffY / this.scale
               this.animatedPositionY.setValue(this.positionY)
+
+              // 如果图片上边缘脱离屏幕上边缘，则进入 swipeDown 动作
+              // if (
+              //   (this.props.imageHeight / 2 - this.positionY) * this.scale <
+              //   this.props.cropHeight / 2
+              // ) {
+              //   if (this.props.enableSwipeDown) {
+              //     this.swipeDownOffset += diffY
+
+              //     // 只要滑动溢出量不小于 0，就可以拖动
+              //     if (this.swipeDownOffset > 0) {
+              //       this.positionY += diffY / this.scale
+              //       this.animatedPositionY.setValue(this.positionY)
+
+              //       // 越到下方，缩放越小
+              //       this.scale = this.scale - diffY / 1000
+              //       this.animatedScale.setValue(this.scale)
+              //     }
+              //   }
+              // }
+            } else {
+              if (this.props.enableSwipeDown) {
+                // 图片高度小于盒子高度，只能向下拖拽，而且一定是 swipeDown 动作
+                this.swipeDownOffset += diffY
+
+                // 只要滑动溢出量不小于 0，就可以拖动
+                if (this.swipeDownOffset > 0) {
+                  this.positionY += diffY / this.scale
+                  this.animatedPositionY.setValue(this.positionY)
+
+                  // 越到下方，缩放越小
+                  this.scale = this.scale - diffY / 1000
+                  this.animatedScale.setValue(this.scale)
+                }
+              }
             }
           }
         } else {
@@ -468,6 +502,17 @@ export default class ImageViewer extends React.Component<Props, State> {
   }
 
   public panResponderReleaseResolve = () => {
+    // 判断是否是 swipeDown
+    if (this.props.enableSwipeDown && this.props.swipeDownThreshold) {
+      if (this.swipeDownOffset > this.props.swipeDownThreshold) {
+        if (this.props.onSwipeDown) {
+          this.props.onSwipeDown()
+        }
+        // Stop reset.
+        return
+      }
+    }
+
     if (this.scale < 1) {
       // 如果缩放小于1，强制重置为 1
       this.scale = 1
@@ -530,6 +575,9 @@ export default class ImageViewer extends React.Component<Props, State> {
 
     // 水平溢出量置空
     this.horizontalWholeOuterCounter = 0
+
+    // swipeDown 溢出量置空
+    this.swipeDownOffset = 0
 
     this.imageDidMove("onPanResponderRelease")
   }
@@ -602,8 +650,6 @@ export default class ImageViewer extends React.Component<Props, State> {
    * 图片区域视图渲染完毕
    */
   public handleLayout(event: LayoutChangeEvent) {
-    // this.centerX = event.nativeEvent.layout.x + event.nativeEvent.layout.width / 2
-    // this.centerY = event.nativeEvent.layout.y + event.nativeEvent.layout.height / 2
     if (this.props.layoutChange) {
       this.props.layoutChange(event)
     }

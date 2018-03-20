@@ -67,6 +67,16 @@ export class Props {
   public style?: ViewStyle = {}
 
   /**
+   * threshold for firing swipe down function
+   */
+  public swipeDownThreshold?: number = 230
+
+  /**
+   * for enable vertical movement if user doens't want it
+   */
+  public enableSwipeDown?: boolean = false
+
+  /**
    * 单击的回调
    */
   public onClick?: () => void = () => {
@@ -120,6 +130,13 @@ export class Props {
    * If provided, this method will be called when the onLayout event fires
    */
   public layoutChange?: (event?: object) => void = () => {
+    //
+  }
+
+  /**
+   * function that fires when user swipes down
+   */
+  public onSwipeDown?: () => void = () => {
     //
   }
 }
