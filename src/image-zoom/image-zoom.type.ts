@@ -7,6 +7,14 @@ export interface ICenterOn {
   duration: number
 }
 
+interface IOnMove {
+  type: string
+  positionX: number
+  positionY: number
+  scale: number
+  zoomCurrentDistance: number
+}
+
 export class Props {
   /**
    * 操作区域宽度
@@ -122,7 +130,7 @@ export class Props {
   /**
    * If provided, this will be called everytime the map is moved
    */
-  public onMove?: (position?: object) => void = () => {
+  public onMove?: (position?: IOnMove) => void = () => {
     //
   }
 
