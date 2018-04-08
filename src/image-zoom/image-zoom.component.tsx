@@ -81,6 +81,9 @@ export default class ImageViewer extends React.Component<Props, State> {
   // 是否是长按
   private isLongPress = false
 
+  // 是否在左右滑
+  private isHorizontalWrap = false
+
   public componentWillMount() {
     const setResponder = isMobile()
 
@@ -99,6 +102,7 @@ export default class ImageViewer extends React.Component<Props, State> {
         this.lastTouchStartTime = new Date().getTime()
         this.isDoubleClick = false
         this.isLongPress = false
+        this.isHorizontalWrap = false
 
         // 任何手势开始，都清空单击计时器
         if (this.singleClickTimeout) {
@@ -236,6 +240,10 @@ export default class ImageViewer extends React.Component<Props, State> {
           if (this.props.panToMove) {
             // 处理左右滑，如果正在 swipeDown，左右滑失效
             if (this.swipeDownOffset === 0) {
+              if (diffX !== 0) {
+                this.isHorizontalWrap = true
+              }
+
               // diffX > 0 表示手往右滑，图往左移动，反之同理
               // horizontalWholeOuterCounter > 0 表示溢出在左侧，反之在右侧，绝对值越大溢出越多
               if (this.props.imageWidth * this.scale > this.props.cropWidth) {
@@ -363,10 +371,7 @@ export default class ImageViewer extends React.Component<Props, State> {
               // }
             } else {
               // swipeDown 不允许在已经有横向偏移量时触发
-              if (
-                this.props.enableSwipeDown &&
-                this.horizontalWholeOuterCounter === 0
-              ) {
+              if (this.props.enableSwipeDown && !this.isHorizontalWrap) {
                 // 图片高度小于盒子高度，只能向下拖拽，而且一定是 swipeDown 动作
                 this.swipeDownOffset += diffY
 
