@@ -76,6 +76,15 @@ export default class App extends React.Component {
 | onSwipeDown                | () => void                                                                                                                       | null                                                                                                                                                                  | function that fires when user swipes down            |
 | swipeDownThreshold         | number                                                                                                                           | 230                                                                                                                                                                   | threshold for firing swipe down function             |
 
+
+| Method                      | params                | Description              |
+| -------- | ----------- | ------------------- |
+| reset                      |                 | Reset the position and the scale of the image              |
+| resetScale                      |               | Reset the scale of the image              |
+| centerOn                      | ICenterOn                  | Centers the image in the position indicated.  ICenterOn={ x: number,  y: number, scale: number, duration: number }   |
+
+
+
 ## Development pattern
 
 ### Step 1, run TS listener
