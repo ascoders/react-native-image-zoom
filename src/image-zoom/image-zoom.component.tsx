@@ -184,7 +184,9 @@ export default class ImageViewer extends React.Component<Props, State> {
                 diffScale /
                 this.scale
             }
-
+            
+            this.imageDidMove('centerOn');
+            
             Animated.parallel([
               Animated.timing(this.animatedScale, {
                 toValue: this.scale,
