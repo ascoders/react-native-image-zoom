@@ -85,14 +85,13 @@ export default class ImageViewer extends React.Component<Props, State> {
   private isHorizontalWrap = false
 
   public componentWillMount() {
-    const setResponder = isMobile()
 
     this.imagePanResponder = PanResponder.create({
       // 要求成为响应者：
-      onStartShouldSetPanResponder: (evt, gestureState) => setResponder,
-      onPanResponderTerminationRequest: (evt, gestureState) => false,
+      onStartShouldSetPanResponder: () => isMobile(),
+      onPanResponderTerminationRequest: () => false,
 
-      onPanResponderGrant: (evt, gestureState) => {
+      onPanResponderGrant: (evt) => {
         // 开始手势操作
         this.lastPositionX = null
         this.lastPositionY = null
@@ -505,7 +504,7 @@ export default class ImageViewer extends React.Component<Props, State> {
           this.panResponderReleaseResolve()
         }
       },
-      onPanResponderTerminate: (evt, gestureState) => {
+      onPanResponderTerminate: () => {
         //
       }
     })
