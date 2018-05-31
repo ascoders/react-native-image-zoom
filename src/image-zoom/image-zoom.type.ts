@@ -80,9 +80,14 @@ export class Props {
   public swipeDownThreshold?: number = 230
 
   /**
-   * for enable vertical movement if user doens't want it
+   * for enabling vertical movement if user doesn't want it
    */
   public enableSwipeDown?: boolean = false
+
+  /**
+   * for disabling focus on image center if user doesn't want it
+   */
+  public enableCenterFocus?: boolean = true
 
   /**
    * 单击的回调

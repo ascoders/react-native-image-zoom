@@ -183,9 +183,9 @@ export default class ImageViewer extends React.Component<Props, State> {
                 diffScale /
                 this.scale
             }
-            
+
             this.imageDidMove('centerOn');
-            
+
             Animated.parallel([
               Animated.timing(this.animatedScale, {
                 toValue: this.scale,
@@ -529,7 +529,7 @@ export default class ImageViewer extends React.Component<Props, State> {
       }
     }
 
-    if (this.scale < 1) {
+    if (this.props.enableCenterFocus && this.scale < 1) {
       // 如果缩放小于1，强制重置为 1
       this.scale = 1
       Animated.timing(this.animatedScale, {
@@ -576,7 +576,7 @@ export default class ImageViewer extends React.Component<Props, State> {
     }
 
     // 拖拽正常结束后,如果没有缩放,直接回到0,0点
-    if (this.scale === 1) {
+    if (this.props.enableCenterFocus && this.scale === 1) {
       this.positionX = 0
       this.positionY = 0
       Animated.timing(this.animatedPositionX, {
