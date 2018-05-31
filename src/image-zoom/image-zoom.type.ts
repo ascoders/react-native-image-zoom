@@ -92,12 +92,12 @@ export class Props {
   /**
    * minimum zoom scale
    */
-  public minScale?: number = 0.6;
+  public minScale: number = 0.6
 
   /**
    * maximum zoom scale
    */
-  public maxScale?: number = 10;
+  public maxScale: number = 10
 
   /**
    * 单击的回调
