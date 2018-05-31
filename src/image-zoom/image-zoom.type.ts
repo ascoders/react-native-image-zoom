@@ -90,6 +90,16 @@ export class Props {
   public enableCenterFocus?: boolean = true
 
   /**
+   * minimum zoom scale
+   */
+  public minScale?: number = 0.6;
+
+  /**
+   * maximum zoom scale
+   */
+  public maxScale?: number = 10;
+
+  /**
    * 单击的回调
    */
   public onClick?: () => void = () => {
