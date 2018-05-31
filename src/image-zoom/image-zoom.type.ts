@@ -85,6 +85,11 @@ export class Props {
   public enableSwipeDown?: boolean = false
 
   /**
+   * for enabling bouncing back to image when overscrolling horizontally
+   */
+  public enableHorizontalBounce?: boolean = false
+
+  /**
    * 单击的回调
    */
   public onClick?: () => void = () => {

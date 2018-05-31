@@ -248,102 +248,110 @@ export default class ImageViewer extends React.Component<Props, State> {
               // diffX > 0 表示手往右滑，图往左移动，反之同理
               // horizontalWholeOuterCounter > 0 表示溢出在左侧，反之在右侧，绝对值越大溢出越多
               if (this.props.imageWidth * this.scale > this.props.cropWidth) {
-                // 如果图片宽度大图盒子宽度， 可以横向拖拽
-                // 没有溢出偏移量或者这次位移完全收回了偏移量才能拖拽
-                if (this.horizontalWholeOuterCounter > 0) {
-                  // 溢出在右侧
-                  if (diffX < 0) {
-                    // 从右侧收紧
-                    if (this.horizontalWholeOuterCounter > Math.abs(diffX)) {
-                      // 偏移量还没有用完
-                      this.horizontalWholeOuterCounter += diffX
-                      diffX = 0
-                    } else {
-                      // 溢出量置为0，偏移量减去剩余溢出量，并且可以被拖动
-                      diffX += this.horizontalWholeOuterCounter
-                      this.horizontalWholeOuterCounter = 0
-                      if (this.props.horizontalOuterRangeOffset) {
-                        this.props.horizontalOuterRangeOffset(0)
-                      }
-                    }
-                  } else {
-                    // 向右侧扩增
-                    this.horizontalWholeOuterCounter += diffX
-                  }
-                } else if (this.horizontalWholeOuterCounter < 0) {
-                  // 溢出在左侧
-                  if (diffX > 0) {
-                    // 从左侧收紧
-                    if (Math.abs(this.horizontalWholeOuterCounter) > diffX) {
-                      // 偏移量还没有用完
-                      this.horizontalWholeOuterCounter += diffX
-                      diffX = 0
-                    } else {
-                      // 溢出量置为0，偏移量减去剩余溢出量，并且可以被拖动
-                      diffX += this.horizontalWholeOuterCounter
-                      this.horizontalWholeOuterCounter = 0
-                      if (this.props.horizontalOuterRangeOffset) {
-                        this.props.horizontalOuterRangeOffset(0)
-                      }
-                    }
-                  } else {
-                    // 向左侧扩增
-                    this.horizontalWholeOuterCounter += diffX
-                  }
+                if (this.props.enableHorizontalBounce) {
+                  this.positionX += diffX / this.scale;
+                  this.animatedPositionX.setValue(this.positionX);
                 } else {
-                  // 溢出偏移量为0，正常移动
+                  // 如果图片宽度大图盒子宽度， 可以横向拖拽
+                  // 没有溢出偏移量或者这次位移完全收回了偏移量才能拖拽
+                  if (this.horizontalWholeOuterCounter > 0) {
+                    // 溢出在右侧
+                    if (diffX < 0) {
+                      // 从右侧收紧
+                      if (this.horizontalWholeOuterCounter > Math.abs(diffX)) {
+                        // 偏移量还没有用完
+                        this.horizontalWholeOuterCounter += diffX
+                        diffX = 0
+                      } else {
+                        // 溢出量置为0，偏移量减去剩余溢出量，并且可以被拖动
+                        diffX += this.horizontalWholeOuterCounter
+                        this.horizontalWholeOuterCounter = 0
+                        if (this.props.horizontalOuterRangeOffset) {
+                          this.props.horizontalOuterRangeOffset(0)
+                        }
+                      }
+                    } else {
+                      // 向右侧扩增
+                      this.horizontalWholeOuterCounter += diffX
+                    }
+                  } else if (this.horizontalWholeOuterCounter < 0) {
+                    // 溢出在左侧
+                    if (diffX > 0) {
+                      // 从左侧收紧
+                      if (Math.abs(this.horizontalWholeOuterCounter) > diffX) {
+                        // 偏移量还没有用完
+                        this.horizontalWholeOuterCounter += diffX
+                        diffX = 0
+                      } else {
+                        // 溢出量置为0，偏移量减去剩余溢出量，并且可以被拖动
+                        diffX += this.horizontalWholeOuterCounter
+                        this.horizontalWholeOuterCounter = 0
+                        if (this.props.horizontalOuterRangeOffset) {
+                          this.props.horizontalOuterRangeOffset(0)
+                        }
+                      }
+                    } else {
+                      // 向左侧扩增
+                      this.horizontalWholeOuterCounter += diffX
+                    }
+                  } else {
+                    // 溢出偏移量为0，正常移动
+                  }
+
+                  // 产生位移
+                  this.positionX += diffX / this.scale
+
+                  // 但是横向不能出现黑边
+                  // 横向能容忍的绝对值
+                  const horizontalMax =
+                    (this.props.imageWidth * this.scale - this.props.cropWidth) /
+                    2 /
+                    this.scale
+                  if (this.positionX < -horizontalMax) {
+                    // 超越了左边临界点，还在继续向左移动
+                    this.positionX = -horizontalMax
+
+                    // 让其产生细微位移，偏离轨道
+                    this.horizontalWholeOuterCounter += -1 / 1e10
+                  } else if (this.positionX > horizontalMax) {
+                    // 超越了右侧临界点，还在继续向右移动
+                    this.positionX = horizontalMax
+
+                    // 让其产生细微位移，偏离轨道
+                    this.horizontalWholeOuterCounter += 1 / 1e10
+                  }
+                  this.animatedPositionX.setValue(this.positionX)
                 }
-
-                // 产生位移
-                this.positionX += diffX / this.scale
-
-                // 但是横向不能出现黑边
-                // 横向能容忍的绝对值
-                const horizontalMax =
-                  (this.props.imageWidth * this.scale - this.props.cropWidth) /
-                  2 /
-                  this.scale
-                if (this.positionX < -horizontalMax) {
-                  // 超越了左边临界点，还在继续向左移动
-                  this.positionX = -horizontalMax
-
-                  // 让其产生细微位移，偏离轨道
-                  this.horizontalWholeOuterCounter += -1 / 1e10
-                } else if (this.positionX > horizontalMax) {
-                  // 超越了右侧临界点，还在继续向右移动
-                  this.positionX = horizontalMax
-
-                  // 让其产生细微位移，偏离轨道
-                  this.horizontalWholeOuterCounter += 1 / 1e10
-                }
-                this.animatedPositionX.setValue(this.positionX)
               } else {
                 // 不能横向拖拽，全部算做溢出偏移量
                 this.horizontalWholeOuterCounter += diffX
               }
 
-              // 溢出量不会超过设定界限
-              if (
-                this.horizontalWholeOuterCounter > (this.props.maxOverflow || 0)
-              ) {
-                this.horizontalWholeOuterCounter = this.props.maxOverflow || 0
-              } else if (
-                this.horizontalWholeOuterCounter <
-                -(this.props.maxOverflow || 0)
-              ) {
-                this.horizontalWholeOuterCounter = -(
-                  this.props.maxOverflow || 0
-                )
-              }
-
-              if (this.horizontalWholeOuterCounter !== 0) {
-                // 如果溢出偏移量不是0，执行溢出回调
-                if (this.props.horizontalOuterRangeOffset) {
-                  this.props.horizontalOuterRangeOffset(
-                    this.horizontalWholeOuterCounter
+              if (this.props.enableHorizontalBounce) {
+                // 溢出量不会超过设定界限
+                if (
+                  this.horizontalWholeOuterCounter > (this.props.maxOverflow || 0)
+                ) {
+                  this.horizontalWholeOuterCounter = this.props.maxOverflow || 0
+                } else if (
+                  this.horizontalWholeOuterCounter <
+                  -(this.props.maxOverflow || 0)
+                ) {
+                  this.horizontalWholeOuterCounter = -(
+                    this.props.maxOverflow || 0
                   )
                 }
+
+                if (this.horizontalWholeOuterCounter !== 0) {
+                  // 如果溢出偏移量不是0，执行溢出回调
+                  if (this.props.horizontalOuterRangeOffset) {
+                    this.props.horizontalOuterRangeOffset(
+                      this.horizontalWholeOuterCounter
+                    )
+                  }
+                }
               }
+
             }
 
             // 如果图片高度大于盒子高度， 可以纵向弹性拖拽
@@ -571,6 +579,23 @@ export default class ImageViewer extends React.Component<Props, State> {
       }
       Animated.timing(this.animatedPositionY, {
         toValue: this.positionY,
+        duration: 100
+      }).start()
+    }
+
+    if (this.props.enableHorizontalBounce && (this.props.imageWidth * this.scale > this.props.cropWidth)) {
+      // 纵向能容忍的绝对值
+      const horizontalMax =
+        (this.props.imageWidth * this.scale - this.props.cropWidth) /
+        2 /
+        this.scale
+      if (this.positionX < -horizontalMax) {
+        this.positionX = -horizontalMax
+      } else if (this.positionX > horizontalMax) {
+        this.positionX = horizontalMax
+      }
+      Animated.timing(this.animatedPositionX, {
+        toValue: this.positionX,
         duration: 100
       }).start()
     }
