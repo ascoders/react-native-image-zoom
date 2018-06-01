@@ -80,7 +80,7 @@ export class Props {
   public swipeDownThreshold?: number = 230
 
   /**
-   * for enable vertical movement if user doens't want it
+   * for enabling vertical movement if user doesn't want it
    */
   public enableSwipeDown?: boolean = false
 
@@ -88,6 +88,20 @@ export class Props {
    * for enabling bouncing back to image when overscrolling horizontally
    */
   public enableHorizontalBounce?: boolean = false
+
+   * for disabling focus on image center if user doesn't want it
+   */
+  public enableCenterFocus?: boolean = true
+
+  /**
+   * minimum zoom scale
+   */
+  public minScale: number = 0.6
+
+  /**
+   * maximum zoom scale
+   */
+  public maxScale: number = 10
 
   /**
    * 单击的回调

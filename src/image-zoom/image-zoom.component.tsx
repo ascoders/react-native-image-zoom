@@ -183,9 +183,9 @@ export default class ImageViewer extends React.Component<Props, State> {
                 diffScale /
                 this.scale
             }
-            
+
             this.imageDidMove('centerOn');
-            
+
             Animated.parallel([
               Animated.timing(this.animatedScale, {
                 toValue: this.scale,
@@ -443,11 +443,11 @@ export default class ImageViewer extends React.Component<Props, State> {
                 (this.zoomCurrentDistance - this.zoomLastDistance) / 200
               let zoom = this.scale + distanceDiff
 
-              if (zoom < 0.6) {
-                zoom = 0.6
+              if (zoom < this.props.minScale) {
+                zoom = this.props.minScale
               }
-              if (zoom > 10) {
-                zoom = 10
+              if (zoom > this.props.maxScale) {
+                zoom = this.props.maxScale
               }
 
               // 记录之前缩放比例
@@ -537,7 +537,7 @@ export default class ImageViewer extends React.Component<Props, State> {
       }
     }
 
-    if (this.scale < 1) {
+    if (this.props.enableCenterFocus && this.scale < 1) {
       // 如果缩放小于1，强制重置为 1
       this.scale = 1
       Animated.timing(this.animatedScale, {
@@ -601,7 +601,7 @@ export default class ImageViewer extends React.Component<Props, State> {
     }
 
     // 拖拽正常结束后,如果没有缩放,直接回到0,0点
-    if (this.scale === 1) {
+    if (this.props.enableCenterFocus && this.scale === 1) {
       this.positionX = 0
       this.positionY = 0
       Animated.timing(this.animatedPositionX, {
