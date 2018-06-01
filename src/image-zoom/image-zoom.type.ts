@@ -85,6 +85,10 @@ export class Props {
   public enableSwipeDown?: boolean = false
 
   /**
+   * for enabling bouncing back to image when overscrolling horizontally
+   */
+  public enableHorizontalBounce?: boolean = false
+
    * for disabling focus on image center if user doesn't want it
    */
   public enableCenterFocus?: boolean = true
