@@ -12,7 +12,9 @@
     "type": "git",
     "url": "https://github.com/ascoders/react-native-image-zoom.git"
   },
-  "keywords": ["image-zoom"],
+  "keywords": [
+    "image-zoom"
+  ],
   "author": "ascoders",
   "license": "ISC",
   "peerDependencies": {
@@ -26,6 +28,7 @@
     "react": "*",
     "react-native": "*",
     "tslint": "^5.8.0",
+    "tslint-config-prettier": "^1.13.0",
     "typescript": "^2.4.2"
   }
 }
