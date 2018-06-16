@@ -6,7 +6,8 @@ import {
   PanResponderInstance,
   Platform,
   PlatformOSType,
-  View
+  View,
+  StyleSheet
 } from 'react-native';
 import styles from './image-zoom.style';
 import { ICenterOn, Props, State } from './image-zoom.type';
@@ -663,11 +664,13 @@ export default class ImageViewer extends React.Component<Props, State> {
       ]
     };
 
+    const parentStyles = StyleSheet.flatten(this.props.style);
+
     return (
       <View
         style={{
           ...styles.container,
-          ...this.props.style,
+          ...parentStyles,
           width: this.props.cropWidth,
           height: this.props.cropHeight
         }}
