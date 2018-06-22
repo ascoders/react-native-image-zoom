@@ -21,7 +21,7 @@ const isMobile = () => {
 };
 
 //
-export default class ImageViewer extends React.Component<Required<Props>, State> {
+export default class ImageViewer extends React.Component<Props, State> {
   public static defaultProps = new Props();
   public state = new State();
 
@@ -108,10 +108,10 @@ export default class ImageViewer extends React.Component<Required<Props>, State>
 
         if (evt.nativeEvent.changedTouches.length > 1) {
           const centerX = (evt.nativeEvent.changedTouches[0].pageX + evt.nativeEvent.changedTouches[1].pageX) / 2;
-          this.centerDiffX = centerX - this.props.cropWidth / 2;
+          this.centerDiffX = centerX - this.props.cropWidth! / 2;
 
           const centerY = (evt.nativeEvent.changedTouches[0].pageY + evt.nativeEvent.changedTouches[1].pageY) / 2;
-          this.centerDiffY = centerY - this.props.cropHeight / 2;
+          this.centerDiffY = centerY - this.props.cropHeight! / 2;
         }
 
         // 计算长按
@@ -162,9 +162,9 @@ export default class ImageViewer extends React.Component<Required<Props>, State>
               const diffScale = this.scale - beforeScale;
               // 找到两手中心点距离页面中心的位移
               // 移动位置
-              this.positionX = (this.props.cropWidth / 2 - this.doubleClickX) * diffScale / this.scale;
+              this.positionX = (this.props.cropWidth! / 2 - this.doubleClickX) * diffScale / this.scale;
 
-              this.positionY = (this.props.cropHeight / 2 - this.doubleClickY) * diffScale / this.scale;
+              this.positionY = (this.props.cropHeight! / 2 - this.doubleClickY) * diffScale / this.scale;
             }
 
             this.imageDidMove('centerOn');
@@ -227,7 +227,7 @@ export default class ImageViewer extends React.Component<Required<Props>, State>
 
               // diffX > 0 表示手往右滑，图往左移动，反之同理
               // horizontalWholeOuterCounter > 0 表示溢出在左侧，反之在右侧，绝对值越大溢出越多
-              if (this.props.imageWidth * this.scale > this.props.cropWidth) {
+              if (this.props.imageWidth! * this.scale > this.props.cropWidth!) {
                 if (this.props.enableHorizontalBounce) {
                   this.positionX += diffX / this.scale;
                   this.animatedPositionX.setValue(this.positionX);
@@ -283,7 +283,7 @@ export default class ImageViewer extends React.Component<Required<Props>, State>
 
                   // 但是横向不能出现黑边
                   // 横向能容忍的绝对值
-                  const horizontalMax = (this.props.imageWidth * this.scale - this.props.cropWidth) / 2 / this.scale;
+                  const horizontalMax = (this.props.imageWidth! * this.scale - this.props.cropWidth!) / 2 / this.scale;
                   if (this.positionX < -horizontalMax) {
                     // 超越了左边临界点，还在继续向左移动
                     this.positionX = -horizontalMax;
@@ -322,7 +322,7 @@ export default class ImageViewer extends React.Component<Required<Props>, State>
             }
 
             // 如果图片高度大于盒子高度， 可以纵向弹性拖拽
-            if (this.props.imageHeight * this.scale > this.props.cropHeight) {
+            if (this.props.imageHeight! * this.scale > this.props.cropHeight!) {
               this.positionY += diffY / this.scale;
               this.animatedPositionY.setValue(this.positionY);
 
@@ -401,11 +401,11 @@ export default class ImageViewer extends React.Component<Required<Props>, State>
               const distanceDiff = (this.zoomCurrentDistance - this.zoomLastDistance) / 200;
               let zoom = this.scale + distanceDiff;
 
-              if (zoom < this.props.minScale) {
-                zoom = this.props.minScale;
+              if (zoom < this.props.minScale!) {
+                zoom = this.props.minScale!;
               }
-              if (zoom > this.props.maxScale) {
-                zoom = this.props.maxScale;
+              if (zoom > this.props.maxScale!) {
+                zoom = this.props.maxScale!;
               }
 
               // 记录之前缩放比例
@@ -499,7 +499,7 @@ export default class ImageViewer extends React.Component<Required<Props>, State>
       }).start();
     }
 
-    if (this.props.imageWidth * this.scale <= this.props.cropWidth) {
+    if (this.props.imageWidth! * this.scale <= this.props.cropWidth!) {
       // 如果图片宽度小于盒子宽度，横向位置重置
       this.positionX = 0;
       Animated.timing(this.animatedPositionX, {
@@ -508,7 +508,7 @@ export default class ImageViewer extends React.Component<Required<Props>, State>
       }).start();
     }
 
-    if (this.props.imageHeight * this.scale <= this.props.cropHeight) {
+    if (this.props.imageHeight! * this.scale <= this.props.cropHeight!) {
       // 如果图片高度小于盒子高度，纵向位置重置
       this.positionY = 0;
       Animated.timing(this.animatedPositionY, {
@@ -519,9 +519,9 @@ export default class ImageViewer extends React.Component<Required<Props>, State>
 
     // 横向肯定不会超出范围，由拖拽时控制
     // 如果图片高度大于盒子高度，纵向不能出现黑边
-    if (this.props.imageHeight * this.scale > this.props.cropHeight) {
+    if (this.props.imageHeight! * this.scale > this.props.cropHeight!) {
       // 纵向能容忍的绝对值
-      const verticalMax = (this.props.imageHeight * this.scale - this.props.cropHeight) / 2 / this.scale;
+      const verticalMax = (this.props.imageHeight! * this.scale - this.props.cropHeight!) / 2 / this.scale;
       if (this.positionY < -verticalMax) {
         this.positionY = -verticalMax;
       } else if (this.positionY > verticalMax) {
@@ -533,9 +533,9 @@ export default class ImageViewer extends React.Component<Required<Props>, State>
       }).start();
     }
 
-    if (this.props.enableHorizontalBounce && this.props.imageWidth * this.scale > this.props.cropWidth) {
+    if (this.props.enableHorizontalBounce && this.props.imageWidth! * this.scale > this.props.cropWidth!) {
       // 纵向能容忍的绝对值
-      const horizontalMax = (this.props.imageWidth * this.scale - this.props.cropWidth) / 2 / this.scale;
+      const horizontalMax = (this.props.imageWidth! * this.scale - this.props.cropWidth!) / 2 / this.scale;
       if (this.positionX < -horizontalMax) {
         this.positionX = -horizontalMax;
       } else if (this.positionX > horizontalMax) {
