@@ -7,7 +7,7 @@ export interface ICenterOn {
   duration: number;
 }
 
-interface IOnMove {
+export interface IOnMove {
   type: string;
   positionX: number;
   positionY: number;
