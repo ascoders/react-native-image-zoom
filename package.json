@@ -3,7 +3,7 @@
   "version": "2.1.4",
   "description": "react native image pan zoom",
   "main": "built/index.js",
-  "types": "src/index.ts",
+  "types": "built/index.d.ts",
   "scripts": {
     "prepare": "rm -rf built && tsc",
     "start": "tsc -w --outDir demo/built"
