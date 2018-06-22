@@ -6,8 +6,8 @@ import {
   PanResponderInstance,
   Platform,
   PlatformOSType,
-  View,
-  StyleSheet
+  StyleSheet,
+  View
 } from 'react-native';
 import styles from './image-zoom.style';
 import { ICenterOn, Props, State } from './image-zoom.type';
@@ -21,7 +21,7 @@ const isMobile = () => {
 };
 
 //
-export default class ImageViewer extends React.Component<Props, State> {
+export default class ImageViewer extends React.Component<Required<Props>, State> {
   public static defaultProps = new Props();
   public state = new State();
 
