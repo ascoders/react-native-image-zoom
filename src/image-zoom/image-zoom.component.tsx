@@ -221,7 +221,7 @@ export default class ImageViewer extends React.Component<Props, State> {
           if (this.props.panToMove) {
             // 处理左右滑，如果正在 swipeDown，左右滑失效
             if (this.swipeDownOffset === 0) {
-              if (diffX !== 0) {
+              if (Math.abs(diffX) > Math.abs(diffY)) {
                 this.isHorizontalWrap = true;
               }
 
