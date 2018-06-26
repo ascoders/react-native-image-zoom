@@ -6,8 +6,8 @@ import {
   PanResponderInstance,
   Platform,
   PlatformOSType,
-  View,
-  StyleSheet
+  StyleSheet,
+  View
 } from 'react-native';
 import styles from './image-zoom.style';
 import { ICenterOn, Props, State } from './image-zoom.type';
@@ -162,9 +162,9 @@ export default class ImageViewer extends React.Component<Props, State> {
               const diffScale = this.scale - beforeScale;
               // 找到两手中心点距离页面中心的位移
               // 移动位置
-              this.positionX = (this.props.cropWidth / 2 - this.doubleClickX) * diffScale / this.scale;
+              this.positionX = ((this.props.cropWidth / 2 - this.doubleClickX) * diffScale) / this.scale;
 
-              this.positionY = (this.props.cropHeight / 2 - this.doubleClickY) * diffScale / this.scale;
+              this.positionY = ((this.props.cropHeight / 2 - this.doubleClickY) * diffScale) / this.scale;
             }
 
             this.imageDidMove('centerOn');
@@ -401,11 +401,11 @@ export default class ImageViewer extends React.Component<Props, State> {
               const distanceDiff = (this.zoomCurrentDistance - this.zoomLastDistance) / 200;
               let zoom = this.scale + distanceDiff;
 
-              if (zoom < this.props.minScale) {
-                zoom = this.props.minScale;
+              if (zoom < (this!.props!.minScale || 0)) {
+                zoom = this!.props!.minScale || 0;
               }
-              if (zoom > this.props.maxScale) {
-                zoom = this.props.maxScale;
+              if (zoom > (this!.props!.maxScale || 0)) {
+                zoom = this!.props!.maxScale || 0;
               }
 
               // 记录之前缩放比例
@@ -420,8 +420,8 @@ export default class ImageViewer extends React.Component<Props, State> {
               const diffScale = this.scale - beforeScale;
               // 找到两手中心点距离页面中心的位移
               // 移动位置
-              this.positionX -= this.centerDiffX * diffScale / this.scale;
-              this.positionY -= this.centerDiffY * diffScale / this.scale;
+              this.positionX -= (this.centerDiffX * diffScale) / this.scale;
+              this.positionY -= (this.centerDiffY * diffScale) / this.scale;
               this.animatedPositionX.setValue(this.positionX);
               this.animatedPositionY.setValue(this.positionY);
             }
