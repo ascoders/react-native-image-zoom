@@ -47,6 +47,11 @@ export class Props {
   public pinchToZoom?: boolean = true;
 
   /**
+   * 双击能否放大
+   */
+  public enableDoubleClickZoom?: boolean = true;
+
+  /**
    * 单击最大位移
    */
   public clickDistance?: number = 10;
