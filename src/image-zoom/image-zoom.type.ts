@@ -15,6 +15,13 @@ interface IOnMove {
   zoomCurrentDistance: number;
 }
 
+export interface IOnClick {
+  locationX: number,
+  locationY: number,
+  pageX: number,
+  pageY: number
+}
+
 export class Props {
   /**
    * 操作区域宽度
@@ -107,7 +114,7 @@ export class Props {
   /**
    * 单击的回调
    */
-  public onClick?: () => void = () => {
+  public onClick?: (eventParams: IOnClick) => void = () => {
     //
   };
 
