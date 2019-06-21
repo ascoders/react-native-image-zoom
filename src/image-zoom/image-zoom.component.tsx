@@ -55,6 +55,9 @@ export default class ImageViewer extends React.Component<Props, State> {
   // 触发单击的 timeout
   private singleClickTimeout: any;
 
+  private singleClickInterval: number = 300;
+  private moveStartedTime: number = 0;
+
   // 计算长按的 timeout
   private longPressTimeout: any;
 
@@ -419,6 +422,8 @@ export default class ImageViewer extends React.Component<Props, State> {
         this.imageDidMove('onPanResponderMove');
       },
       onPanResponderRelease: (evt, gestureState) => {
+        const lastMoveStartedTime = this.moveStartedTime;
+        this.moveStartedTime = 0;
         // 取消长按
         if (this.longPressTimeout) {
           clearTimeout(this.longPressTimeout);
@@ -441,7 +446,7 @@ export default class ImageViewer extends React.Component<Props, State> {
 
         if (evt.nativeEvent.changedTouches.length === 1 && moveDistance < (this.props.clickDistance || 0)) {
           this.singleClickTimeout = setTimeout(() => {
-            if (this.props.onClick) {
+            if (this.props.onClick && (!lastMoveStartedTime || Date.now() - lastMoveStartedTime < this.singleClickInterval)) {
               this.props.onClick({ locationX, locationY, pageX, pageY });
             }
           }, this.props.doubleClickInterval);
@@ -576,7 +581,8 @@ export default class ImageViewer extends React.Component<Props, State> {
   }
 
   public imageDidMove(type: string) {
-    if (this.props.onMove) {
+    const { moveStartedTime } = this;
+    if (this.props.onMove && moveStartedTime && Date.now() - moveStartedTime > this.singleClickInterval) {
       this.props.onMove({
         type,
         positionX: this.positionX,
