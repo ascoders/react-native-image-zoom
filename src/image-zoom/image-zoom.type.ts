@@ -112,6 +112,11 @@ export class Props {
   public maxScale?: number = 10;
 
   /**
+   * Allows defining the onMoveShouldSetResponder behavior.
+   */
+  public onMoveShouldSetPanResponder?: () => boolean;
+
+  /**
    * 单击的回调
    */
   public onClick?: (eventParams: IOnClick) => void = () => {
@@ -179,18 +184,13 @@ export class Props {
    * Allows overriding the default onStartShouldSetPanResponder behavior.
    * By default, always becomes the responder
    */
-  public onStartShouldSetPanResponder = () => true;
-
-  /**
-   * Allows defining the onMoveShouldSetResponder behavior.
-   */
-  public onMoveShouldSetPanResponder?: () => boolean;
+  public onStartShouldSetPanResponder?: () => boolean = () => true;
 
   /**
    * Allows overriding the default onPanResponderTerminationRequest behavior.
    * By default, doesn't terminate until the press ends
    */
-  public onPanResponderTerminationRequest = () => false;
+  public onPanResponderTerminationRequest?: () => boolean = () => false;
 }
 
 export class State {
