@@ -176,10 +176,15 @@ export class Props {
   };
 
   /**
-   * Allows overriding the default onStartShouldSetResponder behavior.
+   * Allows overriding the default onStartShouldSetPanResponder behavior.
    * By default, always becomes the responder
    */
-  public onStartShouldSetResponder = () => true;
+  public onStartShouldSetPanResponder = () => true;
+
+  /**
+   * Allows defining the onMoveShouldSetResponder behavior.
+   */
+  public onMoveShouldSetPanResponder?: () => boolean;
 
   /**
    * Allows overriding the default onPanResponderTerminationRequest behavior.
