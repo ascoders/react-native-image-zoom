@@ -1,14 +1,5 @@
 import * as React from 'react';
-import {
-  Animated,
-  LayoutChangeEvent,
-  PanResponder,
-  PanResponderInstance,
-  Platform,
-  PlatformOSType,
-  StyleSheet,
-  View
-} from 'react-native';
+import { Animated, LayoutChangeEvent, PanResponder, PanResponderInstance, StyleSheet, View } from 'react-native';
 import styles from './image-zoom.style';
 import { ICenterOn, Props, State } from './image-zoom.type';
 
@@ -77,8 +68,8 @@ export default class ImageViewer extends React.Component<Props, State> {
   public componentWillMount() {
     this.imagePanResponder = PanResponder.create({
       // 要求成为响应者：
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderTerminationRequest: () => false,
+      onStartShouldSetPanResponder: this.props.onStartShouldSetResponder,
+      onPanResponderTerminationRequest: this.props.onPanResponderTerminationRequest,
 
       onPanResponderGrant: evt => {
         // 开始手势操作

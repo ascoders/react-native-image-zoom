@@ -16,10 +16,10 @@ interface IOnMove {
 }
 
 export interface IOnClick {
-  locationX: number,
-  locationY: number,
-  pageX: number,
-  pageY: number
+  locationX: number;
+  locationY: number;
+  pageX: number;
+  pageY: number;
 }
 
 export class Props {
@@ -174,6 +174,18 @@ export class Props {
   public onSwipeDown?: () => void = () => {
     //
   };
+
+  /**
+   * Allows overriding the default onStartShouldSetResponder behavior.
+   * By default, always becomes the responder
+   */
+  public onStartShouldSetResponder = () => true;
+
+  /**
+   * Allows overriding the default onPanResponderTerminationRequest behavior.
+   * By default, doesn't terminate until the press ends
+   */
+  public onPanResponderTerminationRequest = () => false;
 }
 
 export class State {
