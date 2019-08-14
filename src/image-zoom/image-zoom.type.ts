@@ -7,7 +7,7 @@ export interface ICenterOn {
   duration: number;
 }
 
-interface IOnMove {
+export interface IOnMove {
   type: string;
   positionX: number;
   positionY: number;
@@ -22,7 +22,7 @@ export interface IOnClick {
   pageY: number;
 }
 
-export class Props {
+export class ImageZoomProps {
   /**
    * 操作区域宽度
    */
@@ -193,7 +193,7 @@ export class Props {
   public onPanResponderTerminationRequest?: (event: GestureResponderEvent, gestureState: PanResponderGestureState) => boolean = () => false;
 }
 
-export class State {
+export class ImageZoomState {
   /**
    * 中心 x 坐标
    */

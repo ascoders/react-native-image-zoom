@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Animated, LayoutChangeEvent, PanResponder, PanResponderInstance, StyleSheet, View } from 'react-native';
 import styles from './image-zoom.style';
-import { ICenterOn, Props, State } from './image-zoom.type';
+import { ICenterOn, ImageZoomProps, ImageZoomState } from './image-zoom.type';
 
-export default class ImageViewer extends React.Component<Props, State> {
-  public static defaultProps = new Props();
-  public state = new State();
+export default class ImageViewer extends React.Component<ImageZoomProps, ImageZoomState> {
+  public static defaultProps = new ImageZoomProps();
+  public state = new ImageZoomState();
 
   // 上次/当前/动画 x 位移
   private lastPositionX: number | null = null;
@@ -557,7 +557,7 @@ export default class ImageViewer extends React.Component<Props, State> {
     }
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public componentWillReceiveProps(nextProps: ImageZoomProps) {
     // Either centerOn has never been called, or it is a repeat and we should ignore it
     if (
       (nextProps.centerOn && !this.props.centerOn) ||
