@@ -74,7 +74,7 @@ export default class ImageViewer extends React.Component<Props, State> {
   // 是否在左右滑
   private isHorizontalWrap = false;
 
-  public componentWillMount() {
+  public UNSAFE_componentWillMount() {
     this.imagePanResponder = PanResponder.create({
       // 要求成为响应者：
       onStartShouldSetPanResponder: () => true,
@@ -565,7 +565,7 @@ export default class ImageViewer extends React.Component<Props, State> {
     }
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     // Either centerOn has never been called, or it is a repeat and we should ignore it
     if (
       (nextProps.centerOn && !this.props.centerOn) ||
