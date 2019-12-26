@@ -74,10 +74,79 @@ export default class ImageViewer extends React.Component<Props, State> {
   // 是否在左右滑
   private isHorizontalWrap = false;
 
+  private onDoubleClick = (evt:any)=>{
+    // 认为触发了双击
+    this.lastClickTime = 0;
+    if (this.props.onDoubleClick) {
+      this.props.onDoubleClick();
+    }
+
+    // 取消长按
+    clearTimeout(this.longPressTimeout);
+
+    // 因为可能触发放大，因此记录双击时的坐标位置
+    this.doubleClickX = evt.nativeEvent.changedTouches[0].pageX;
+    this.doubleClickY = evt.nativeEvent.changedTouches[0].pageY;
+
+    // 缩放
+    this.isDoubleClick = true;
+
+    if (this.props.enableDoubleClickZoom) {
+      if (this.scale > 1 || this.scale < 1) {
+        // 回归原位
+        this.scale = 1;
+
+        this.positionX = 0;
+        this.positionY = 0;
+      } else {
+        // 开始在位移地点缩放
+        // 记录之前缩放比例
+        // 此时 this.scale 一定为 1
+        const beforeScale = this.scale;
+
+        // 开始缩放
+        this.scale = 2;
+
+        // 缩放 diff
+        const diffScale = this.scale - beforeScale;
+        // 找到两手中心点距离页面中心的位移
+        // 移动位置
+        this.positionX = ((this.props.cropWidth / 2 - this.doubleClickX) * diffScale) / this.scale;
+
+        this.positionY = ((this.props.cropHeight / 2 - this.doubleClickY) * diffScale) / this.scale;
+      }
+
+      this.imageDidMove('centerOn');
+
+      Animated.parallel([
+        Animated.timing(this.animatedScale, {
+          toValue: this.scale,
+          duration: 100
+        }),
+        Animated.timing(this.animatedPositionX, {
+          toValue: this.positionX,
+          duration: 100
+        }),
+        Animated.timing(this.animatedPositionY, {
+          toValue: this.positionY,
+          duration: 100
+        })
+      ]).start();
+    }
+
+}
+
   public componentWillMount() {
     this.imagePanResponder = PanResponder.create({
       // 要求成为响应者：
-      onStartShouldSetPanResponder: () => true,
+      onStartShouldSetPanResponder:  (evt) => {
+        let curTime = new Date().getTime() 
+        if ((curTime - this.lastClickTimeEnter) < (this.props.doubleClickInterval || 0)){
+            this.onDoubleClick(evt)
+        }        
+        this.lastClickTimeEnter = new Date().getTime();
+        return  this.animatedScale._value !== 1 ? true :  evt.nativeEvent.changedTouches.length > 1 ? true : false; 
+    },
       onPanResponderTerminationRequest: () => false,
 
       onPanResponderGrant: evt => {
