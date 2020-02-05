@@ -109,10 +109,11 @@ export default class ImageViewer extends React.Component<Props, State> {
         if (this.longPressTimeout) {
           clearTimeout(this.longPressTimeout);
         }
+        const { locationX, locationY, pageX, pageY } = evt.nativeEvent;
         this.longPressTimeout = setTimeout(() => {
           this.isLongPress = true;
           if (this.props.onLongPress) {
-            this.props.onLongPress();
+            this.props.onLongPress({ locationX, locationY, pageX, pageY });
           }
         }, this.props.longPressTime);
 

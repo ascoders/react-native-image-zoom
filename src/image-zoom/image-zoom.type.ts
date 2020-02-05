@@ -128,7 +128,7 @@ export class Props {
   /**
    * 长按的回调
    */
-  public onLongPress?: () => void = () => {
+  public onLongPress?: (eventParams: IOnClick) => void = () => {
     //
   };
 
