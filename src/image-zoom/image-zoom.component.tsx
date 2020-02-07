@@ -122,7 +122,7 @@ export default class ImageViewer extends React.Component<Props, State> {
             // 认为触发了双击
             this.lastClickTime = 0;
             if (this.props.onDoubleClick) {
-              this.props.onDoubleClick();
+              this.props.onDoubleClick({ pageX: this.doubleClickX, pageY: this.doubleClickY });
             }
 
             // 取消长按
