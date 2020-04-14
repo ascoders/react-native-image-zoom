@@ -121,16 +121,17 @@ export default class ImageViewer extends React.Component<Props, State> {
           if (new Date().getTime() - this.lastClickTime < (this.props.doubleClickInterval || 0)) {
             // 认为触发了双击
             this.lastClickTime = 0;
+
+            // 因为可能触发放大，因此记录双击时的坐标位置
+            this.doubleClickX = evt.nativeEvent.changedTouches[0].pageX;
+            this.doubleClickY = evt.nativeEvent.changedTouches[0].pageY;
+
             if (this.props.onDoubleClick) {
               this.props.onDoubleClick({ pageX: this.doubleClickX, pageY: this.doubleClickY });
             }
 
             // 取消长按
             clearTimeout(this.longPressTimeout);
-
-            // 因为可能触发放大，因此记录双击时的坐标位置
-            this.doubleClickX = evt.nativeEvent.changedTouches[0].pageX;
-            this.doubleClickY = evt.nativeEvent.changedTouches[0].pageY;
 
             // 缩放
             this.isDoubleClick = true;
