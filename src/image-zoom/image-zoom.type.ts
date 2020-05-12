@@ -111,6 +111,12 @@ export class Props {
    */
   public maxScale?: number = 10;
 
+  /** 
+   * 是否启用原生动画驱动
+   * Whether to use native code to perform animations.
+   */
+  public useNativeDriver?: boolean = false;
+
   /**
    * 单击的回调
    */
