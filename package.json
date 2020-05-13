@@ -22,13 +22,10 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@types/react": "*",
-    "@types/react-native": "*",
-    "ascoders-tslint-config": "^1.0.2",
-    "react": "*",
-    "react-native": "*",
-    "tslint": "^5.8.0",
-    "tslint-config-prettier": "^1.13.0",
-    "typescript": "^2.9.2"
+    "@types/react": "^16.9.35",
+    "@types/react-native": "^0.62.7",
+    "react": "^16.13.1",
+    "react-native": "^0.62.2",
+    "typescript": "^3.9.2"
   }
 }
