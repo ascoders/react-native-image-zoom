@@ -16,10 +16,10 @@ interface IOnMove {
 }
 
 export interface IOnClick {
-  locationX: number,
-  locationY: number,
-  pageX: number,
-  pageY: number
+  locationX: number;
+  locationY: number;
+  pageX: number;
+  pageY: number;
 }
 
 export interface IOnDoubleClick {
@@ -121,7 +121,7 @@ export class Props {
    */
   public maxScale?: number = 10;
 
-  /** 
+  /**
    * 是否启用原生动画驱动
    * Whether to use native code to perform animations.
    */

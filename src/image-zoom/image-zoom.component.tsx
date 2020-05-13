@@ -7,7 +7,7 @@ import {
   Platform,
   PlatformOSType,
   StyleSheet,
-  View
+  View,
 } from 'react-native';
 import styles from './image-zoom.style';
 import { ICenterOn, Props, State } from './image-zoom.type';
@@ -80,7 +80,7 @@ export default class ImageViewer extends React.Component<Props, State> {
       onStartShouldSetPanResponder: () => true,
       onPanResponderTerminationRequest: () => false,
 
-      onPanResponderGrant: evt => {
+      onPanResponderGrant: (evt) => {
         // 开始手势操作
         this.lastPositionX = null;
         this.lastPositionY = null;
@@ -168,18 +168,18 @@ export default class ImageViewer extends React.Component<Props, State> {
                 Animated.timing(this.animatedScale, {
                   toValue: this.scale,
                   duration: 100,
-                  useNativeDriver: !!this.props.useNativeDriver
+                  useNativeDriver: !!this.props.useNativeDriver,
                 }),
                 Animated.timing(this.animatedPositionX, {
                   toValue: this.positionX,
                   duration: 100,
-                  useNativeDriver: !!this.props.useNativeDriver
+                  useNativeDriver: !!this.props.useNativeDriver,
                 }),
                 Animated.timing(this.animatedPositionY, {
                   toValue: this.positionY,
                   duration: 100,
-                  useNativeDriver: !!this.props.useNativeDriver
-                })
+                  useNativeDriver: !!this.props.useNativeDriver,
+                }),
               ]).start();
             }
           } else {
@@ -461,7 +461,7 @@ export default class ImageViewer extends React.Component<Props, State> {
       },
       onPanResponderTerminate: () => {
         //
-      }
+      },
     });
   }
 
@@ -490,7 +490,7 @@ export default class ImageViewer extends React.Component<Props, State> {
       Animated.timing(this.animatedScale, {
         toValue: this.scale,
         duration: 100,
-        useNativeDriver: !!this.props.useNativeDriver
+        useNativeDriver: !!this.props.useNativeDriver,
       }).start();
     }
 
@@ -500,7 +500,7 @@ export default class ImageViewer extends React.Component<Props, State> {
       Animated.timing(this.animatedPositionX, {
         toValue: this.positionX,
         duration: 100,
-        useNativeDriver: !!this.props.useNativeDriver
+        useNativeDriver: !!this.props.useNativeDriver,
       }).start();
     }
 
@@ -510,7 +510,7 @@ export default class ImageViewer extends React.Component<Props, State> {
       Animated.timing(this.animatedPositionY, {
         toValue: this.positionY,
         duration: 100,
-        useNativeDriver: !!this.props.useNativeDriver
+        useNativeDriver: !!this.props.useNativeDriver,
       }).start();
     }
 
@@ -527,7 +527,7 @@ export default class ImageViewer extends React.Component<Props, State> {
       Animated.timing(this.animatedPositionY, {
         toValue: this.positionY,
         duration: 100,
-        useNativeDriver: !!this.props.useNativeDriver
+        useNativeDriver: !!this.props.useNativeDriver,
       }).start();
     }
 
@@ -542,7 +542,7 @@ export default class ImageViewer extends React.Component<Props, State> {
       Animated.timing(this.animatedPositionX, {
         toValue: this.positionX,
         duration: 100,
-        useNativeDriver: !!this.props.useNativeDriver
+        useNativeDriver: !!this.props.useNativeDriver,
       }).start();
     }
 
@@ -553,12 +553,12 @@ export default class ImageViewer extends React.Component<Props, State> {
       Animated.timing(this.animatedPositionX, {
         toValue: this.positionX,
         duration: 100,
-        useNativeDriver: !!this.props.useNativeDriver
+        useNativeDriver: !!this.props.useNativeDriver,
       }).start();
       Animated.timing(this.animatedPositionY, {
         toValue: this.positionY,
         duration: 100,
-        useNativeDriver: !!this.props.useNativeDriver
+        useNativeDriver: !!this.props.useNativeDriver,
       }).start();
     }
 
@@ -594,7 +594,7 @@ export default class ImageViewer extends React.Component<Props, State> {
         positionX: this.positionX,
         positionY: this.positionY,
         scale: this.scale,
-        zoomCurrentDistance: this.zoomCurrentDistance
+        zoomCurrentDistance: this.zoomCurrentDistance,
       });
     }
   }
@@ -615,18 +615,18 @@ export default class ImageViewer extends React.Component<Props, State> {
       Animated.timing(this.animatedScale, {
         toValue: this.scale,
         duration,
-        useNativeDriver: !!this.props.useNativeDriver
+        useNativeDriver: !!this.props.useNativeDriver,
       }),
       Animated.timing(this.animatedPositionX, {
         toValue: this.positionX,
         duration,
-        useNativeDriver: !!this.props.useNativeDriver
+        useNativeDriver: !!this.props.useNativeDriver,
       }),
       Animated.timing(this.animatedPositionY, {
         toValue: this.positionY,
         duration,
-        useNativeDriver: !!this.props.useNativeDriver
-      })
+        useNativeDriver: !!this.props.useNativeDriver,
+      }),
     ]).start(() => {
       this.imageDidMove('centerOn');
     });
@@ -657,15 +657,15 @@ export default class ImageViewer extends React.Component<Props, State> {
     const animateConf = {
       transform: [
         {
-          scale: this.animatedScale
+          scale: this.animatedScale,
         },
         {
-          translateX: this.animatedPositionX
+          translateX: this.animatedPositionX,
         },
         {
-          translateY: this.animatedPositionY
-        }
-      ]
+          translateY: this.animatedPositionY,
+        },
+      ],
     };
 
     const parentStyles = StyleSheet.flatten(this.props.style);
@@ -676,7 +676,7 @@ export default class ImageViewer extends React.Component<Props, State> {
           ...styles.container,
           ...parentStyles,
           width: this.props.cropWidth,
-          height: this.props.cropHeight
+          height: this.props.cropHeight,
         }}
         {...this.imagePanResponder!.panHandlers}
       >
@@ -685,7 +685,7 @@ export default class ImageViewer extends React.Component<Props, State> {
             onLayout={this.handleLayout.bind(this)}
             style={{
               width: this.props.imageWidth,
-              height: this.props.imageHeight
+              height: this.props.imageHeight,
             }}
           >
             {this.props.children}
