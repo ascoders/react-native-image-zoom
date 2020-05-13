@@ -1,14 +1,5 @@
 import * as React from 'react';
-import {
-  Animated,
-  LayoutChangeEvent,
-  PanResponder,
-  PanResponderInstance,
-  Platform,
-  PlatformOSType,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Animated, LayoutChangeEvent, PanResponder, PanResponderInstance, StyleSheet, View } from 'react-native';
 import styles from './image-zoom.style';
 import { ICenterOn, Props, State } from './image-zoom.type';
 
@@ -36,7 +27,7 @@ export default class ImageViewer extends React.Component<Props, State> {
   private imagePanResponder: PanResponderInstance | null = null;
 
   // 上次手按下去的时间
-  private lastTouchStartTime: number = 0;
+  private lastTouchStartTime = 0;
 
   // 滑动过程中，整体横向过界偏移量
   private horizontalWholeOuterCounter = 0;
@@ -53,10 +44,10 @@ export default class ImageViewer extends React.Component<Props, State> {
   private centerDiffY = 0;
 
   // 触发单击的 timeout
-  private singleClickTimeout: any;
+  private singleClickTimeout: number | undefined;
 
   // 计算长按的 timeout
-  private longPressTimeout: any;
+  private longPressTimeout: number | undefined;
 
   // 上一次点击的时间
   private lastClickTime = 0;
@@ -74,7 +65,7 @@ export default class ImageViewer extends React.Component<Props, State> {
   // 是否在左右滑
   private isHorizontalWrap = false;
 
-  public componentWillMount() {
+  public componentWillMount(): void {
     this.imagePanResponder = PanResponder.create({
       // 要求成为响应者：
       onStartShouldSetPanResponder: () => true,
@@ -465,14 +456,14 @@ export default class ImageViewer extends React.Component<Props, State> {
     });
   }
 
-  public resetScale = () => {
+  public resetScale = (): void => {
     this.positionX = 0;
     this.positionY = 0;
     this.scale = 1;
     this.animatedScale.setValue(1);
   };
 
-  public panResponderReleaseResolve = () => {
+  public panResponderReleaseResolve = (): void => {
     // 判断是否是 swipeDown
     if (this.props.enableSwipeDown && this.props.swipeDownThreshold) {
       if (this.swipeDownOffset > this.props.swipeDownThreshold) {
@@ -571,13 +562,13 @@ export default class ImageViewer extends React.Component<Props, State> {
     this.imageDidMove('onPanResponderRelease');
   };
 
-  public componentDidMount() {
+  public componentDidMount(): void {
     if (this.props.centerOn) {
       this.centerOn(this.props.centerOn);
     }
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public componentWillReceiveProps(nextProps: Props): void {
     // Either centerOn has never been called, or it is a repeat and we should ignore it
     if (
       (nextProps.centerOn && !this.props.centerOn) ||
@@ -587,7 +578,7 @@ export default class ImageViewer extends React.Component<Props, State> {
     }
   }
 
-  public imageDidMove(type: string) {
+  public imageDidMove(type: string): void {
     if (this.props.onMove) {
       this.props.onMove({
         type,
@@ -602,11 +593,11 @@ export default class ImageViewer extends React.Component<Props, State> {
   public didCenterOnChange(
     params: { x: number; y: number; scale: number; duration: number },
     paramsNext: { x: number; y: number; scale: number; duration: number }
-  ) {
+  ): boolean {
     return params.x !== paramsNext.x || params.y !== paramsNext.y || params.scale !== paramsNext.scale;
   }
 
-  public centerOn(params: ICenterOn) {
+  public centerOn(params: ICenterOn): void {
     this.positionX = params!.x;
     this.positionY = params!.y;
     this.scale = params!.scale;
@@ -635,7 +626,7 @@ export default class ImageViewer extends React.Component<Props, State> {
   /**
    * 图片区域视图渲染完毕
    */
-  public handleLayout(event: LayoutChangeEvent) {
+  public handleLayout(event: LayoutChangeEvent): void {
     if (this.props.layoutChange) {
       this.props.layoutChange(event);
     }
@@ -644,7 +635,7 @@ export default class ImageViewer extends React.Component<Props, State> {
   /**
    * 重置大小和位置
    */
-  public reset() {
+  public reset(): void {
     this.scale = 1;
     this.animatedScale.setValue(this.scale);
     this.positionX = 0;
@@ -653,7 +644,7 @@ export default class ImageViewer extends React.Component<Props, State> {
     this.animatedPositionY.setValue(this.positionY);
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const animateConf = {
       transform: [
         {
