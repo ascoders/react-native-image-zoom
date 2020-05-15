@@ -22,6 +22,11 @@ export interface IOnClick {
   pageY: number
 }
 
+export interface IOnDoubleClick {
+  pageX: number,
+  pageY: number
+}
+
 export class Props {
   /**
    * 操作区域宽度
@@ -127,7 +132,7 @@ export class Props {
   /**
    * 双击的回调
    */
-  public onDoubleClick?: () => void = () => {
+  public onDoubleClick?: (eventParams: IOnDoubleClick) => void = () => {
     //
   };
 
