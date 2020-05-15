@@ -117,7 +117,12 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
           this.doubleClickY = evt.nativeEvent.changedTouches[0].pageY;
 
           if (this.props.onDoubleClick) {
-            this.props.onDoubleClick({ pageX: this.doubleClickX, pageY: this.doubleClickY });
+            this.props.onDoubleClick({
+              locationX: evt.nativeEvent.changedTouches[0].locationX,
+              locationY: evt.nativeEvent.changedTouches[0].locationY,
+              pageX: this.doubleClickX,
+              pageY: this.doubleClickY,
+            });
           }
 
           // 取消长按

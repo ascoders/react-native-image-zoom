@@ -22,11 +22,6 @@ export interface IOnClick {
   pageY: number;
 }
 
-export interface IOnDoubleClick {
-  pageX: number;
-  pageY: number;
-}
-
 export class ImageZoomProps {
   /**
    * 操作区域宽度
@@ -137,7 +132,7 @@ export class ImageZoomProps {
   /**
    * 双击的回调
    */
-  public onDoubleClick?: (eventParams: IOnDoubleClick) => void = () => {
+  public onDoubleClick?: (eventParams: IOnClick) => void = () => {
     //
   };
 
