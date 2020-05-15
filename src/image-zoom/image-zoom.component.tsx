@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Animated, LayoutChangeEvent, PanResponder, StyleSheet, View } from 'react-native';
 import styles from './image-zoom.style';
-import { ICenterOn, Props, State } from './image-zoom.type';
+import { ICenterOn, ImageZoomProps, ImageZoomState } from './image-zoom.type';
 
-export default class ImageViewer extends React.Component<Props, State> {
-  public static defaultProps = new Props();
-  public state = new State();
+export default class ImageViewer extends React.Component<ImageZoomProps, ImageZoomState> {
+  public static defaultProps = new ImageZoomProps();
+  public state = new ImageZoomState();
 
   // 上次/当前/动画 x 位移
   private lastPositionX: number | null = null;
@@ -65,8 +65,9 @@ export default class ImageViewer extends React.Component<Props, State> {
   // 图片手势处理
   private imagePanResponder = PanResponder.create({
     // 要求成为响应者：
-    onStartShouldSetPanResponder: () => true,
-    onPanResponderTerminationRequest: () => false,
+    onStartShouldSetPanResponder: this.props.onStartShouldSetPanResponder,
+    onPanResponderTerminationRequest: this.props.onPanResponderTerminationRequest,
+    onMoveShouldSetPanResponder: this.props.onMoveShouldSetPanResponder,
 
     onPanResponderGrant: (evt) => {
       // 开始手势操作
@@ -564,7 +565,7 @@ export default class ImageViewer extends React.Component<Props, State> {
     }
   }
 
-  public componentDidUpdate(prevProps: Props): void {
+  public componentDidUpdate(prevProps: ImageZoomProps): void {
     // Either centerOn has never been called, or it is a repeat and we should ignore it
     if (
       (this.props.centerOn && !prevProps.centerOn) ||
