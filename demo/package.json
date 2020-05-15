@@ -18,8 +18,15 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@react-native-community/masked-view": "0.1.6",
+    "@react-navigation/native": "^5.3.2",
+    "@react-navigation/stack": "^5.3.5",
     "expo": "^37.0.10",
     "react": "^16.13.1",
-    "react-native": "^0.61.4"
+    "react-native": "^0.61.4",
+    "react-native-gesture-handler": "~1.6.0",
+    "react-native-reanimated": "~1.7.0",
+    "react-native-safe-area-context": "0.7.3",
+    "react-native-screens": "~2.2.0"
   }
 }
