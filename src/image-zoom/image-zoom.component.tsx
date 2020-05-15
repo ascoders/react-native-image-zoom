@@ -381,11 +381,11 @@ export default class ImageViewer extends React.Component<Props, State> {
             const distanceDiff = (this.zoomCurrentDistance - this.zoomLastDistance) / 200;
             let zoom = this.scale + distanceDiff;
 
-            if (zoom < (this!.props!.minScale || 0)) {
-              zoom = this!.props!.minScale || 0;
+            if (zoom < (this.props.minScale || 0)) {
+              zoom = this.props.minScale || 0;
             }
-            if (zoom > (this!.props!.maxScale || 0)) {
-              zoom = this!.props!.maxScale || 0;
+            if (zoom > (this.props.maxScale || 0)) {
+              zoom = this.props.maxScale || 0;
             }
 
             // 记录之前缩放比例
@@ -594,10 +594,10 @@ export default class ImageViewer extends React.Component<Props, State> {
   }
 
   public centerOn(params: ICenterOn): void {
-    this.positionX = params!.x;
-    this.positionY = params!.y;
-    this.scale = params!.scale;
-    const duration = params!.duration || 300;
+    this.positionX = params.x;
+    this.positionY = params.y;
+    this.scale = params.scale;
+    const duration = params.duration || 300;
     Animated.parallel([
       Animated.timing(this.animatedScale, {
         toValue: this.scale,
@@ -665,7 +665,7 @@ export default class ImageViewer extends React.Component<Props, State> {
           width: this.props.cropWidth,
           height: this.props.cropHeight,
         }}
-        {...this.imagePanResponder!.panHandlers}
+        {...this.imagePanResponder.panHandlers}
       >
         <Animated.View style={animateConf} renderToHardwareTextureAndroid={this.props.useHardwareTextureAndroid}>
           <View
