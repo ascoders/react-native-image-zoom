@@ -109,10 +109,11 @@ export default class ImageViewer extends React.Component<Props, State> {
         if (this.longPressTimeout) {
           clearTimeout(this.longPressTimeout);
         }
+        const { locationX, locationY, pageX, pageY } = evt.nativeEvent;
         this.longPressTimeout = setTimeout(() => {
           this.isLongPress = true;
           if (this.props.onLongPress) {
-            this.props.onLongPress();
+            this.props.onLongPress({ locationX, locationY, pageX, pageY });
           }
         }, this.props.longPressTime);
 
@@ -121,16 +122,17 @@ export default class ImageViewer extends React.Component<Props, State> {
           if (new Date().getTime() - this.lastClickTime < (this.props.doubleClickInterval || 0)) {
             // 认为触发了双击
             this.lastClickTime = 0;
-            if (this.props.onDoubleClick) {
-              this.props.onDoubleClick();
-            }
-
-            // 取消长按
-            clearTimeout(this.longPressTimeout);
 
             // 因为可能触发放大，因此记录双击时的坐标位置
             this.doubleClickX = evt.nativeEvent.changedTouches[0].pageX;
             this.doubleClickY = evt.nativeEvent.changedTouches[0].pageY;
+
+            if (this.props.onDoubleClick) {
+              this.props.onDoubleClick({ pageX: this.doubleClickX, pageY: this.doubleClickY });
+            }
+
+            // 取消长按
+            clearTimeout(this.longPressTimeout);
 
             // 缩放
             this.isDoubleClick = true;
@@ -165,15 +167,18 @@ export default class ImageViewer extends React.Component<Props, State> {
               Animated.parallel([
                 Animated.timing(this.animatedScale, {
                   toValue: this.scale,
-                  duration: 100
+                  duration: 100,
+                  useNativeDriver: !!this.props.useNativeDriver
                 }),
                 Animated.timing(this.animatedPositionX, {
                   toValue: this.positionX,
-                  duration: 100
+                  duration: 100,
+                  useNativeDriver: !!this.props.useNativeDriver
                 }),
                 Animated.timing(this.animatedPositionY, {
                   toValue: this.positionY,
-                  duration: 100
+                  duration: 100,
+                  useNativeDriver: !!this.props.useNativeDriver
                 })
               ]).start();
             }
@@ -484,7 +489,8 @@ export default class ImageViewer extends React.Component<Props, State> {
       this.scale = 1;
       Animated.timing(this.animatedScale, {
         toValue: this.scale,
-        duration: 100
+        duration: 100,
+        useNativeDriver: !!this.props.useNativeDriver
       }).start();
     }
 
@@ -493,7 +499,8 @@ export default class ImageViewer extends React.Component<Props, State> {
       this.positionX = 0;
       Animated.timing(this.animatedPositionX, {
         toValue: this.positionX,
-        duration: 100
+        duration: 100,
+        useNativeDriver: !!this.props.useNativeDriver
       }).start();
     }
 
@@ -502,7 +509,8 @@ export default class ImageViewer extends React.Component<Props, State> {
       this.positionY = 0;
       Animated.timing(this.animatedPositionY, {
         toValue: this.positionY,
-        duration: 100
+        duration: 100,
+        useNativeDriver: !!this.props.useNativeDriver
       }).start();
     }
 
@@ -518,7 +526,8 @@ export default class ImageViewer extends React.Component<Props, State> {
       }
       Animated.timing(this.animatedPositionY, {
         toValue: this.positionY,
-        duration: 100
+        duration: 100,
+        useNativeDriver: !!this.props.useNativeDriver
       }).start();
     }
 
@@ -532,7 +541,8 @@ export default class ImageViewer extends React.Component<Props, State> {
       }
       Animated.timing(this.animatedPositionX, {
         toValue: this.positionX,
-        duration: 100
+        duration: 100,
+        useNativeDriver: !!this.props.useNativeDriver
       }).start();
     }
 
@@ -542,11 +552,13 @@ export default class ImageViewer extends React.Component<Props, State> {
       this.positionY = 0;
       Animated.timing(this.animatedPositionX, {
         toValue: this.positionX,
-        duration: 100
+        duration: 100,
+        useNativeDriver: !!this.props.useNativeDriver
       }).start();
       Animated.timing(this.animatedPositionY, {
         toValue: this.positionY,
-        duration: 100
+        duration: 100,
+        useNativeDriver: !!this.props.useNativeDriver
       }).start();
     }
 
@@ -602,15 +614,18 @@ export default class ImageViewer extends React.Component<Props, State> {
     Animated.parallel([
       Animated.timing(this.animatedScale, {
         toValue: this.scale,
-        duration
+        duration,
+        useNativeDriver: !!this.props.useNativeDriver
       }),
       Animated.timing(this.animatedPositionX, {
         toValue: this.positionX,
-        duration
+        duration,
+        useNativeDriver: !!this.props.useNativeDriver
       }),
       Animated.timing(this.animatedPositionY, {
         toValue: this.positionY,
-        duration
+        duration,
+        useNativeDriver: !!this.props.useNativeDriver
       })
     ]).start(() => {
       this.imageDidMove('centerOn');

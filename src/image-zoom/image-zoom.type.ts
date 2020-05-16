@@ -22,6 +22,11 @@ export interface IOnClick {
   pageY: number
 }
 
+export interface IOnDoubleClick {
+  pageX: number,
+  pageY: number
+}
+
 export class Props {
   /**
    * 操作区域宽度
@@ -116,6 +121,12 @@ export class Props {
    */
   public maxScale?: number = 10;
 
+  /** 
+   * 是否启用原生动画驱动
+   * Whether to use native code to perform animations.
+   */
+  public useNativeDriver?: boolean = false;
+
   /**
    * 单击的回调
    */
@@ -126,14 +137,14 @@ export class Props {
   /**
    * 双击的回调
    */
-  public onDoubleClick?: () => void = () => {
+  public onDoubleClick?: (eventParams: IOnDoubleClick) => void = () => {
     //
   };
 
   /**
    * 长按的回调
    */
-  public onLongPress?: () => void = () => {
+  public onLongPress?: (eventParams: IOnClick) => void = () => {
     //
   };
 
