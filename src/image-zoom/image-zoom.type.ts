@@ -107,6 +107,11 @@ export class Props {
   public enableCenterFocus?: boolean = true;
 
   /**
+   * for disabling rendering to hardware texture on Android
+   */
+  public useHardwareTextureAndroid?: boolean = true;
+
+  /**
    * minimum zoom scale
    */
   public minScale?: number = 0.6;

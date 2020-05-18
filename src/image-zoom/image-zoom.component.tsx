@@ -680,7 +680,7 @@ export default class ImageViewer extends React.Component<Props, State> {
         }}
         {...this.imagePanResponder!.panHandlers}
       >
-        <Animated.View style={animateConf} renderToHardwareTextureAndroid>
+        <Animated.View style={animateConf} renderToHardwareTextureAndroid={this.props.useHardwareTextureAndroid}>
           <View
             onLayout={this.handleLayout.bind(this)}
             style={{
