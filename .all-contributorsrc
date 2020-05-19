@@ -31,6 +31,24 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "AlhaythamElhassan",
+      "name": "Alhaytham Elhassan",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/20684701?v=4",
+      "profile": "https://github.com/AlhaythamElhassan",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "alexandrius",
+      "name": "Alexander Pataridze",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/5978212?v=4",
+      "profile": "http://alexandrius.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
