@@ -60,6 +60,7 @@ export default class App extends React.Component {
 | **imageWidth(required)** | number | picture width | 100 |
 | **imageHeight(required)** | number | picture height | 100 |
 | onClick | (eventParams: [IOnClick](https://github.com/ascoders/react-native-image-zoom/blob/master/src/image-zoom/image-zoom.type.ts))=>void | onClick | ()=>{} |
+| onDoubleClick | (eventParams: [IOnClick](https://github.com/ascoders/react-native-image-zoom/blob/master/src/image-zoom/image-zoom.type.ts))=>void | onDoubleClick | ()=>{} |
 | panToMove | boolean | allow to move picture with one finger | true |
 | pinchToZoom | boolean | allow scale with two fingers | true |
 | clickDistance | number | how many finger movement can also trigger `onClick` | 10 |
@@ -68,7 +69,7 @@ export default class App extends React.Component {
 | responderRelease | (vx: number)=>void | let go but do not cancel | ()=>{} |
 | maxOverflow | number | maximum sliding threshold | 100 |
 | longPressTime | number | long press threshold | 800 |
-| onLongPress | ()=>void | on longPress | ()=> {} |
+| onLongPress | (eventParams: [IOnClick](https://github.com/ascoders/react-native-image-zoom/blob/master/src/image-zoom/image-zoom.type.ts))=>void | on longPress | ()=> {} |
 | doubleClickInterval | number | time allocated for second click to be considered as doublClick event | 175 |
 | onMove | ( position: [IOnMove](https://github.com/ascoders/react-native-image-zoom/blob/master/src/image-zoom/image-zoom.type.ts) )=>void | reports movement position data (helpful to build overlays) | ()=> {} |
 | centerOn | { x: number, y: number, scale: number, duration: number } | if given this will cause the map to pan and zoom to the desired location | undefined |
