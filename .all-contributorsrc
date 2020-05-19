@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "kingdaro",
+      "name": "Darius",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/19603573?v=4",
+      "profile": "http://kingdaro.net",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "react-native-image-zoom",
+  "projectOwner": "ascoders",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
