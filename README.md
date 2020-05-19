@@ -1,6 +1,6 @@
 ## Show Cases
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 > Zoom while sliding
@@ -126,6 +126,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="http://kingdaro.net"><img src="https://avatars1.githubusercontent.com/u/19603573?v=4" width="100px;" alt=""/><br /><sub><b>Darius</b></sub></a><br /><a href="https://github.com/ascoders/react-native-image-zoom/commits?author=kingdaro" title="Code">💻</a></td>
     <td align="center"><a href="https://tpxp.ddns.net"><img src="https://avatars2.githubusercontent.com/u/7191841?v=4" width="100px;" alt=""/><br /><sub><b>Thomas P.</b></sub></a><br /><a href="https://github.com/ascoders/react-native-image-zoom/commits?author=TPXP" title="Code">💻</a></td>
+    <td align="center"><a href="http://alexandrius.com"><img src="https://avatars3.githubusercontent.com/u/5978212?v=4" width="100px;" alt=""/><br /><sub><b>Alexander Pataridze</b></sub></a><br /><a href="https://github.com/ascoders/react-native-image-zoom/commits?author=alexandrius" title="Code">💻</a></td>
   </tr>
 </table>
 
