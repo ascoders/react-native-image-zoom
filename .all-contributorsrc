@@ -49,6 +49,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "pxpeterxu",
+      "name": "Peter Xu",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/2924388?v=4",
+      "profile": "https://github.com/pxpeterxu",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
