@@ -12,5 +12,5 @@
     "sourceMap": true,
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", "demo"]
+  "exclude": ["node_modules", "demo", "built"]
 }

@@ -1,29 +1,23 @@
+import 'react-native-gesture-handler';
 import React from 'react';
-import { Image, Dimensions } from 'react-native';
-import ImageZoom from './built/index';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './HomeScreen';
+import BigImage from './BigImage';
+import DebugImage from './DebugImage';
+
+const Stack = createStackNavigator();
 
 export default class App extends React.Component {
   render() {
     return (
-      <ImageZoom
-        cropWidth={Dimensions.get('window').width}
-        cropHeight={Dimensions.get('window').height}
-        imageWidth={Dimensions.get('window').width}
-        imageHeight={Dimensions.get('window').height}
-        enableSwipeDown={true}
-      >
-        <Image
-          enableHorizontalBounce={true}
-          style={{
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height
-          }}
-          source={{
-            uri:
-              'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522606437962&di=f93f5c645225a5681155ebcde27b257f&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0159fa5944bcd3a8012193a34b762d.jpg%402o.jpg'
-          }}
-        />
-      </ImageZoom>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Rereact-native-image-pan-zoom' }} />
+          <Stack.Screen name="BigImage" component={BigImage} options={{ title: 'Big Image' }} />
+          <Stack.Screen name="DebugImage" component={DebugImage} options={{ title: 'Debug Image' }} />
+        </Stack.Navigator>
+      </NavigationContainer>
     );
   }
 }

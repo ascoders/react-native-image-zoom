@@ -3,24 +3,30 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-native-scripts": "1.8.1",
-    "jest-expo": "23.0.0",
-    "react-test-renderer": "16.0.0"
+    "jest-expo": "37.0.0",
+    "react-test-renderer": "16.13.1"
   },
-  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "react-native-scripts start",
-    "eject": "react-native-scripts eject",
-    "android": "react-native-scripts android",
-    "ios": "react-native-scripts ios",
+    "start": "expo start",
+    "eject": "expo eject",
+    "android": "expo android",
+    "ios": "expo ios",
     "test": "node node_modules/jest/bin/jest.js --watch"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
-    "expo": "^23.0.4",
-    "react": "16.0.0",
-    "react-native": "0.50.3"
+    "@react-native-community/masked-view": "0.1.6",
+    "@react-navigation/native": "^5.3.2",
+    "@react-navigation/stack": "^5.3.5",
+    "expo": "^37.0.10",
+    "react": "^16.13.1",
+    "react-native": "^0.61.4",
+    "react-native-gesture-handler": "~1.6.0",
+    "react-native-reanimated": "~1.7.0",
+    "react-native-safe-area-context": "0.7.3",
+    "react-native-screens": "~2.2.0"
   }
 }
