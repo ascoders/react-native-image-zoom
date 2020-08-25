@@ -48,6 +48,7 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
 
   // 上一次点击的时间
   private lastClickTime = 0;
+  private lastClickLocation = { x: 0, y: 0 };
 
   // 双击时的位置
   private doubleClickX = 0;
@@ -107,8 +108,16 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
       }, this.props.longPressTime);
 
       if (evt.nativeEvent.changedTouches.length <= 1) {
+        const clickLocation = {
+          x: evt.nativeEvent.changedTouches[0].pageX,
+          y: evt.nativeEvent.changedTouches[0].pageY,
+        };
         // 一个手指的情况
-        if (new Date().getTime() - this.lastClickTime < (this.props.doubleClickInterval || 0)) {
+        if (
+          new Date().getTime() - this.lastClickTime < (this.props.doubleClickInterval || 0) &&
+          Math.abs(clickLocation.x - this.lastClickLocation.x) < (this.props.doubleClickLocationThreshold || 30) &&
+          Math.abs(clickLocation.y - this.lastClickLocation.y) < (this.props.doubleClickLocationThreshold || 30)
+        ) {
           // 认为触发了双击
           this.lastClickTime = 0;
 
@@ -178,6 +187,7 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
           }
         } else {
           this.lastClickTime = new Date().getTime();
+          this.lastClickLocation = clickLocation;
         }
       }
     },
