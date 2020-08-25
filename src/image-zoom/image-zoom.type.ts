@@ -79,6 +79,11 @@ export class ImageZoomProps {
   public doubleClickInterval?: number = 175;
 
   /**
+   * Click location threshold to consider consecutive two clicks
+   * as double click used to avoid double clicking in different locations
+   */
+  public doubleClickLocationThreshold?: number = 30;
+  /**
    * If provided this will cause the view to zoom and pan to the center point
    * Duration is optional and defaults to 300 ms.
    */
