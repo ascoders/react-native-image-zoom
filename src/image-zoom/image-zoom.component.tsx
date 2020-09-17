@@ -438,7 +438,7 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
       const moveDistance = Math.sqrt(gestureState.dx * gestureState.dx + gestureState.dy * gestureState.dy);
       const { locationX, locationY, pageX, pageY } = evt.nativeEvent;
 
-      if (evt.nativeEvent.changedTouches.length === 1 && moveDistance < (this.props.clickDistance || 0)) {
+      if (this.scale >= 1 && evt.nativeEvent.changedTouches.length === 1 && moveDistance < (this.props.clickDistance || 0)) {
         this.singleClickTimeout = setTimeout(() => {
           if (this.props.onClick) {
             this.props.onClick({ locationX, locationY, pageX, pageY });
