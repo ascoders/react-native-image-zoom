@@ -603,7 +603,7 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
     this.positionX = params.x;
     this.positionY = params.y;
     this.scale = params.scale;
-    const duration = params.duration || 300;
+    const duration = params.duration ?? 300;
     Animated.parallel([
       Animated.timing(this.animatedScale, {
         toValue: this.scale,
