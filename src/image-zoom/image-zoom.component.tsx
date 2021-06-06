@@ -178,7 +178,7 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
         // 有时双击会被当做位移，这里屏蔽掉
         return;
       }
-      if(evt.nativeEvent.touches.length > 2){
+      if (evt.nativeEvent.touches.length > 2) {
         return;
       }
 
@@ -352,7 +352,7 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
             }
           }
         }
-      } else if(evt.nativeEvent.touches.length > 1 && evt.nativeEvent.touches.length > 1) {
+      } else if (evt.nativeEvent.touches.length > 1 && evt.nativeEvent.touches.length > 1) {
         // 多个手指的情况
         // 取消长按状态
         if (this.longPressTimeout) {
@@ -441,7 +441,7 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
       const moveDistance = Math.sqrt(gestureState.dx * gestureState.dx + gestureState.dy * gestureState.dy);
       const { locationX, locationY, pageX, pageY } = evt.nativeEvent;
 
-      if (evt.nativeEvent.touches.length === 1 && moveDistance < (this.props.clickDistance || 0)) {
+      if (evt.nativeEvent.changedTouches.length === 1 && moveDistance < (this.props.clickDistance || 0)) {
         this.singleClickTimeout = setTimeout(() => {
           if (this.props.onClick) {
             this.props.onClick({ locationX, locationY, pageX, pageY });
