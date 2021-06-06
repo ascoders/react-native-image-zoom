@@ -10,9 +10,6 @@
 		"prettier": "prettier --write src",
 		"start": "tsc -w --outDir demo/built"
 	},
-	"repository": {
-		"type": "git"
-	},
 	"keywords": ["image-zoom"],
 	"author": "ascoders",
 	"license": "ISC",
