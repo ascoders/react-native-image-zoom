@@ -1,6 +1,6 @@
 {
-	"name": "react-native-image-pan-zoom",
-	"version": "2.1.12",
+	"name": "react-native-image-zoom-fixed",
+	"version": "2.2.0",
 	"description": "react native image pan zoom",
 	"main": "built/index.js",
 	"types": "built/index.d.ts",
@@ -10,7 +10,9 @@
 		"prettier": "prettier --write src",
 		"start": "tsc -w --outDir demo/built"
 	},
-	"keywords": ["image-zoom"],
+	"keywords": [
+		"image-zoom"
+	],
 	"author": "ascoders",
 	"license": "ISC",
 	"peerDependencies": {
