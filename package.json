@@ -1,6 +1,6 @@
 {
 	"name": "react-native-image-zoom-fixed",
-	"version": "2.2.0",
+	"version": "2.2.1",
 	"description": "react native image pan zoom",
 	"main": "built/index.js",
 	"types": "built/index.d.ts",
