@@ -665,12 +665,6 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
     };
 
     const parentStyles = StyleSheet.flatten(this.props.style);
-
-    console.log(this.props.imageWidth, this.props.imageHeight, this.props.cropWidth);
-    const zoomScale = this.props.cropWidth / this.props.imageWidth;
-    console.log(zoomScale);
-    if (Number.isNaN(zoomScale)) return null;
-
     return (
       <View
         style={{
@@ -683,23 +677,13 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
       >
         <Animated.View style={animateConf} renderToHardwareTextureAndroid={this.props.useHardwareTextureAndroid}>
           <View
+            onLayout={this.handleLayout.bind(this)}
             style={{
-              transform: [
-                {
-                  scale: zoomScale,
-                },
-              ],
+              width: this.props.imageWidth,
+              height: this.props.imageHeight,
             }}
           >
-            <View
-              onLayout={this.handleLayout.bind(this)}
-              style={{
-                width: this.props.imageWidth,
-                height: this.props.imageHeight,
-              }}
-            >
-              {this.props.children}
-            </View>
+            {this.props.children}
           </View>
         </Animated.View>
       </View>
