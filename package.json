@@ -31,8 +31,8 @@
 		"eslint-plugin-react": "^7.20.0",
 		"eslint-plugin-react-native": "^3.8.1",
 		"prettier": "^2.0.5",
-		"react": "^16.13.1",
-		"react-native": "^0.62.2",
+		"react": "*",
+		"react-native": "*",
 		"typescript": "^3.9.2"
 	}
 }
