@@ -1,6 +1,6 @@
 {
 	"name": "react-native-image-zoom-fixed",
-	"version": "2.3.0",
+	"version": "2.3.1",
 	"description": "react native image pan zoom",
 	"repository": "https://github.com/ktjd123/react-native-image-zoom",
 	"main": "built/index.js",
@@ -31,8 +31,8 @@
 		"eslint-plugin-react": "^7.20.0",
 		"eslint-plugin-react-native": "^3.8.1",
 		"prettier": "^2.0.5",
-		"react": "*",
-		"react-native": "*",
+		"react": "^16.13.1",
+		"react-native": "^0.62.2",
 		"typescript": "^3.9.2"
 	}
 }

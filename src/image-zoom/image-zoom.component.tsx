@@ -42,10 +42,10 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
   private centerDiffY = 0;
 
   // 触发单击的 timeout
-  private singleClickTimeout: number | undefined;
+  private singleClickTimeout: ReturnType<typeof setTimeout> | undefined;
 
   // 计算长按的 timeout
-  private longPressTimeout: number | undefined;
+  private longPressTimeout: ReturnType<typeof setTimeout> | undefined;
 
   // 上一次点击的时间
   private lastClickTime = 0;
@@ -212,7 +212,7 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
 
         if (Math.abs(this.horizontalWholeCounter) > 5 || Math.abs(this.verticalWholeCounter) > 5) {
           // 如果位移超出手指范围，取消长按监听
-          clearTimeout(this.longPressTimeout);
+          if (this.longPressTimeout) clearTimeout(this.longPressTimeout);
         }
 
         if (this.props.panToMove) {
