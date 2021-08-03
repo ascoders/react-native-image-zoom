@@ -22,6 +22,7 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
   private animatedScale = new Animated.Value(1);
   private zoomLastDistance: number | null = null;
   private zoomCurrentDistance = 0;
+  private defaultScale = this.props.minScale || 0;
 
   // 上次手按下去的时间
   private lastTouchStartTime = 0;
@@ -41,10 +42,10 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
   private centerDiffY = 0;
 
   // 触发单击的 timeout
-  private singleClickTimeout: number | undefined;
+  private singleClickTimeout: ReturnType<typeof setTimeout> | undefined;
 
   // 计算长按的 timeout
-  private longPressTimeout: number | undefined;
+  private longPressTimeout: ReturnType<typeof setTimeout> | undefined;
 
   // 上一次点击的时间
   private lastClickTime = 0;
@@ -86,14 +87,6 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
         clearTimeout(this.singleClickTimeout);
       }
 
-      if (evt.nativeEvent.changedTouches.length > 1) {
-        const centerX = (evt.nativeEvent.changedTouches[0].pageX + evt.nativeEvent.changedTouches[1].pageX) / 2;
-        this.centerDiffX = centerX - this.props.cropWidth / 2;
-
-        const centerY = (evt.nativeEvent.changedTouches[0].pageY + evt.nativeEvent.changedTouches[1].pageY) / 2;
-        this.centerDiffY = centerY - this.props.cropHeight / 2;
-      }
-
       // 计算长按
       if (this.longPressTimeout) {
         clearTimeout(this.longPressTimeout);
@@ -106,20 +99,20 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
         }
       }, this.props.longPressTime);
 
-      if (evt.nativeEvent.changedTouches.length <= 1) {
+      if (evt.nativeEvent.touches.length <= 1) {
         // 一个手指的情况
         if (new Date().getTime() - this.lastClickTime < (this.props.doubleClickInterval || 0)) {
           // 认为触发了双击
           this.lastClickTime = 0;
 
           // 因为可能触发放大，因此记录双击时的坐标位置
-          this.doubleClickX = evt.nativeEvent.changedTouches[0].pageX;
-          this.doubleClickY = evt.nativeEvent.changedTouches[0].pageY;
+          this.doubleClickX = evt.nativeEvent.touches[0].pageX;
+          this.doubleClickY = evt.nativeEvent.touches[0].pageY;
 
           if (this.props.onDoubleClick) {
             this.props.onDoubleClick({
-              locationX: evt.nativeEvent.changedTouches[0].locationX,
-              locationY: evt.nativeEvent.changedTouches[0].locationY,
+              locationX: evt.nativeEvent.touches[0].locationX,
+              locationY: evt.nativeEvent.touches[0].locationY,
               pageX: this.doubleClickX,
               pageY: this.doubleClickY,
             });
@@ -132,9 +125,9 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
           this.isDoubleClick = true;
 
           if (this.props.enableDoubleClickZoom) {
-            if (this.scale > 1 || this.scale < 1) {
+            if (this.scale > this.defaultScale || this.scale < this.defaultScale) {
               // 回归原位
-              this.scale = 1;
+              this.scale = this.defaultScale;
 
               this.positionX = 0;
               this.positionY = 0;
@@ -145,7 +138,7 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
               const beforeScale = this.scale;
 
               // 开始缩放
-              this.scale = 2;
+              this.scale = this.defaultScale * 2;
 
               // 缩放 diff
               const diffScale = this.scale - beforeScale;
@@ -186,8 +179,19 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
         // 有时双击会被当做位移，这里屏蔽掉
         return;
       }
+      if (evt.nativeEvent.touches.length > 2) {
+        return;
+      }
 
-      if (evt.nativeEvent.changedTouches.length <= 1) {
+      if (evt.nativeEvent.touches.length > 1) {
+        const centerX = (evt.nativeEvent.touches[0].pageX + evt.nativeEvent.touches[1].pageX) / 2;
+        this.centerDiffX = centerX - this.props.cropWidth / 2;
+
+        const centerY = (evt.nativeEvent.touches[0].pageY + evt.nativeEvent.touches[1].pageY) / 2;
+        this.centerDiffY = centerY - this.props.cropHeight / 2;
+      }
+
+      if (evt.nativeEvent.touches.length === 1) {
         // x 位移
         let diffX = gestureState.dx - (this.lastPositionX || 0);
         if (this.lastPositionX === null) {
@@ -208,7 +212,7 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
 
         if (Math.abs(this.horizontalWholeCounter) > 5 || Math.abs(this.verticalWholeCounter) > 5) {
           // 如果位移超出手指范围，取消长按监听
-          clearTimeout(this.longPressTimeout);
+          if (this.longPressTimeout) clearTimeout(this.longPressTimeout);
         }
 
         if (this.props.panToMove) {
@@ -349,7 +353,7 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
             }
           }
         }
-      } else {
+      } else if (evt.nativeEvent.touches.length > 1 && evt.nativeEvent.touches.length > 1) {
         // 多个手指的情况
         // 取消长按状态
         if (this.longPressTimeout) {
@@ -360,27 +364,27 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
           // 找最小的 x 和最大的 x
           let minX: number;
           let maxX: number;
-          if (evt.nativeEvent.changedTouches[0].locationX > evt.nativeEvent.changedTouches[1].locationX) {
-            minX = evt.nativeEvent.changedTouches[1].pageX;
-            maxX = evt.nativeEvent.changedTouches[0].pageX;
+          if (evt.nativeEvent.touches[0].locationX > evt.nativeEvent.touches[1].locationX) {
+            minX = evt.nativeEvent.touches[1].pageX;
+            maxX = evt.nativeEvent.touches[0].pageX;
           } else {
-            minX = evt.nativeEvent.changedTouches[0].pageX;
-            maxX = evt.nativeEvent.changedTouches[1].pageX;
+            minX = evt.nativeEvent.touches[0].pageX;
+            maxX = evt.nativeEvent.touches[1].pageX;
           }
 
           let minY: number;
           let maxY: number;
-          if (evt.nativeEvent.changedTouches[0].locationY > evt.nativeEvent.changedTouches[1].locationY) {
-            minY = evt.nativeEvent.changedTouches[1].pageY;
-            maxY = evt.nativeEvent.changedTouches[0].pageY;
+          if (evt.nativeEvent.touches[0].locationY > evt.nativeEvent.touches[1].locationY) {
+            minY = evt.nativeEvent.touches[1].pageY;
+            maxY = evt.nativeEvent.touches[0].pageY;
           } else {
-            minY = evt.nativeEvent.changedTouches[0].pageY;
-            maxY = evt.nativeEvent.changedTouches[1].pageY;
+            minY = evt.nativeEvent.touches[0].pageY;
+            maxY = evt.nativeEvent.touches[1].pageY;
           }
 
           const widthDistance = maxX - minX;
           const heightDistance = maxY - minY;
-          const diagonalDistance = Math.sqrt(widthDistance * widthDistance + heightDistance * heightDistance);
+          const diagonalDistance = Math.sqrt(widthDistance * widthDistance + heightDistance * heightDistance) * 2;
           this.zoomCurrentDistance = Number(diagonalDistance.toFixed(1));
 
           if (this.zoomLastDistance !== null) {
@@ -461,8 +465,8 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
   public resetScale = (): void => {
     this.positionX = 0;
     this.positionY = 0;
-    this.scale = 1;
-    this.animatedScale.setValue(1);
+    this.scale = this.defaultScale;
+    this.animatedScale.setValue(this.defaultScale);
   };
 
   public panResponderReleaseResolve = (): void => {
@@ -477,9 +481,9 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
       }
     }
 
-    if (this.props.enableCenterFocus && this.scale < 1) {
+    if (this.props.enableCenterFocus && this.scale < this.defaultScale) {
       // 如果缩放小于1，强制重置为 1
-      this.scale = 1;
+      this.scale = this.defaultScale;
       Animated.timing(this.animatedScale, {
         toValue: this.scale,
         duration: 100,
@@ -540,7 +544,7 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
     }
 
     // 拖拽正常结束后,如果没有缩放,直接回到0,0点
-    if (this.props.enableCenterFocus && this.scale === 1) {
+    if (this.props.enableCenterFocus && this.scale === this.defaultScale) {
       this.positionX = 0;
       this.positionY = 0;
       Animated.timing(this.animatedPositionX, {
@@ -568,6 +572,8 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
     if (this.props.centerOn) {
       this.centerOn(this.props.centerOn);
     }
+    this.scale = this.defaultScale;
+    this.animatedScale.setValue(this.scale);
   }
 
   public componentDidUpdate(prevProps: ImageZoomProps): void {
@@ -638,7 +644,7 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
    * 重置大小和位置
    */
   public reset(): void {
-    this.scale = 1;
+    this.scale = this.defaultScale;
     this.animatedScale.setValue(this.scale);
     this.positionX = 0;
     this.animatedPositionX.setValue(this.positionX);
@@ -662,7 +668,6 @@ export default class ImageViewer extends React.Component<ImageZoomProps, ImageZo
     };
 
     const parentStyles = StyleSheet.flatten(this.props.style);
-
     return (
       <View
         style={{
